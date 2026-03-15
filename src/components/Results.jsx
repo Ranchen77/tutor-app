@@ -134,7 +134,7 @@ export default function Results({ profile, subject, result, onPlayAgain, onChoos
         {/* Reward status */}
         {!qualifies ? (
           <div className="results__reward-msg results__reward-msg--retry">
-            📉 Score B or higher (8/10) to earn rewards. Try again!
+            📉 Score B or higher (12/15) to earn rewards. Try again!
           </div>
         ) : alreadyEarned ? (
           <div className="results__reward-msg results__reward-msg--done">

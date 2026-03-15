@@ -1092,6 +1092,293 @@ export const grade9English = [
 ];
 
 // ─────────────────────────────────────────────
+//  GRADE 6  —  BIOLOGY  (15 questions)
+// ─────────────────────────────────────────────
+export const grade6Biology = [
+  {
+    id: "g6-bio-1",
+    question: "What is the basic unit of life?",
+    options: ["Atom", "Cell", "Tissue", "Organ"],
+    correctIndex: 1,
+    explanation: "The cell is the smallest unit that can carry out all basic life processes. All living things are made of one or more cells."
+  },
+  {
+    id: "g6-bio-2",
+    question: "Which organelle is known as the 'powerhouse of the cell'?",
+    options: ["Nucleus", "Ribosome", "Mitochondria", "Vacuole"],
+    correctIndex: 2,
+    explanation: "Mitochondria produce energy (ATP) for the cell through cellular respiration — hence the nickname 'powerhouse of the cell.'"
+  },
+  {
+    id: "g6-bio-3",
+    question: "What process do plants use to make their own food using sunlight?",
+    options: ["Respiration", "Photosynthesis", "Digestion", "Fermentation"],
+    correctIndex: 1,
+    explanation: "Photosynthesis occurs in plant chloroplasts, converting sunlight, water, and CO₂ into glucose and oxygen."
+  },
+  {
+    id: "g6-bio-4",
+    question: "Which part of the plant cell contains chlorophyll?",
+    options: ["Mitochondria", "Cell wall", "Chloroplast", "Nucleus"],
+    correctIndex: 2,
+    explanation: "Chloroplasts contain the green pigment chlorophyll, which captures light energy for photosynthesis."
+  },
+  {
+    id: "g6-bio-5",
+    question: "What do producers in a food chain do?",
+    options: [
+      "Eat other animals",
+      "Break down dead matter",
+      "Make their own food through photosynthesis",
+      "Consume plants only"
+    ],
+    correctIndex: 2,
+    explanation: "Producers (like plants and algae) make their own food using photosynthesis and form the base of every food chain."
+  },
+  {
+    id: "g6-bio-6",
+    question: "Which system in the human body pumps blood?",
+    options: ["Digestive system", "Nervous system", "Respiratory system", "Circulatory system"],
+    correctIndex: 3,
+    explanation: "The circulatory system — including the heart, blood vessels, and blood — pumps and delivers oxygen and nutrients throughout the body."
+  },
+  {
+    id: "g6-bio-7",
+    question: "What is the main function of the lungs?",
+    options: [
+      "Filter blood",
+      "Exchange oxygen and carbon dioxide",
+      "Break down food",
+      "Produce red blood cells"
+    ],
+    correctIndex: 1,
+    explanation: "The lungs take in oxygen from the air and release carbon dioxide — a waste product of cellular respiration — back out."
+  },
+  {
+    id: "g6-bio-8",
+    question: "A food web differs from a food chain because it:",
+    options: [
+      "Has only one path of energy flow",
+      "Shows only producers",
+      "Shows multiple overlapping feeding relationships",
+      "Only includes decomposers"
+    ],
+    correctIndex: 2,
+    explanation: "A food web shows the complex, interconnected feeding relationships among many organisms in an ecosystem, unlike the single-path food chain."
+  },
+  {
+    id: "g6-bio-9",
+    question: "What is the role of decomposers in an ecosystem?",
+    options: [
+      "Produce food from sunlight",
+      "Hunt and eat animals",
+      "Break down dead organisms and recycle nutrients",
+      "Transport water to plants"
+    ],
+    correctIndex: 2,
+    explanation: "Decomposers (like fungi and bacteria) break down dead matter, releasing nutrients back into the soil for plants to reuse."
+  },
+  {
+    id: "g6-bio-10",
+    question: "Which of the following is an example of a vertebrate?",
+    options: ["Butterfly", "Earthworm", "Shark", "Snail"],
+    correctIndex: 2,
+    explanation: "Vertebrates have a backbone (spine). Sharks are fish and have a vertebral column. Butterflies, earthworms, and snails are all invertebrates."
+  },
+  {
+    id: "g6-bio-11",
+    question: "What is the primary function of the roots in a plant?",
+    options: [
+      "Perform photosynthesis",
+      "Produce seeds",
+      "Absorb water and nutrients from the soil",
+      "Transport food to animals"
+    ],
+    correctIndex: 2,
+    explanation: "Roots anchor the plant and absorb water and dissolved minerals from the soil, which are then transported up through the stem."
+  },
+  {
+    id: "g6-bio-12",
+    question: "In which organelle is most of a cell's DNA stored?",
+    options: ["Ribosome", "Nucleus", "Vacuole", "Cell membrane"],
+    correctIndex: 1,
+    explanation: "The nucleus acts as the control center of the cell and houses most of the cell's DNA, which carries instructions for all cell functions."
+  },
+  {
+    id: "g6-bio-13",
+    question: "Which gas do plants release during photosynthesis?",
+    options: ["Carbon dioxide", "Nitrogen", "Oxygen", "Hydrogen"],
+    correctIndex: 2,
+    explanation: "During photosynthesis, plants use CO₂ and water, and release oxygen as a byproduct — the oxygen we breathe!"
+  },
+  {
+    id: "g6-bio-14",
+    question: "What type of reproduction involves only one parent?",
+    options: ["Sexual reproduction", "Asexual reproduction", "Pollination", "Fertilization"],
+    correctIndex: 1,
+    explanation: "Asexual reproduction involves a single parent and produces offspring genetically identical to that parent (e.g., budding in yeast, cloning in bacteria)."
+  },
+  {
+    id: "g6-bio-15",
+    question: "Which of the following best describes an adaptation?",
+    options: [
+      "A sudden change in a species' diet",
+      "A trait that helps an organism survive in its environment",
+      "Moving to a new habitat",
+      "A disease that affects many organisms"
+    ],
+    correctIndex: 1,
+    explanation: "An adaptation is an inherited trait that increases an organism's ability to survive and reproduce in its environment (e.g., a polar bear's thick fur)."
+  }
+];
+
+// ─────────────────────────────────────────────
+//  GRADE 9  —  BIOLOGY  (15 questions)
+// ─────────────────────────────────────────────
+export const grade9Biology = [
+  {
+    id: "g9-bio-1",
+    question: "What is the function of the cell membrane?",
+    options: [
+      "Produce energy for the cell",
+      "Control what enters and exits the cell",
+      "Store the cell's genetic material",
+      "Synthesize proteins"
+    ],
+    correctIndex: 1,
+    explanation: "The cell membrane is selectively permeable — it regulates what substances enter and leave the cell, maintaining homeostasis."
+  },
+  {
+    id: "g9-bio-2",
+    question: "During which phase of mitosis do chromosomes line up along the cell's equator?",
+    options: ["Prophase", "Anaphase", "Metaphase", "Telophase"],
+    correctIndex: 2,
+    explanation: "In metaphase, chromosomes align at the cell's metaphase plate (equator), ensuring each daughter cell will receive an equal copy of chromosomes."
+  },
+  {
+    id: "g9-bio-3",
+    question: "What molecule carries genetic information in most organisms?",
+    options: ["ATP", "RNA", "DNA", "Glucose"],
+    correctIndex: 2,
+    explanation: "DNA (deoxyribonucleic acid) is the double-helix molecule that stores the genetic blueprint for building and running an organism."
+  },
+  {
+    id: "g9-bio-4",
+    question: "Which base pairs with Adenine in a DNA molecule?",
+    options: ["Cytosine", "Guanine", "Thymine", "Uracil"],
+    correctIndex: 2,
+    explanation: "In DNA, Adenine (A) pairs with Thymine (T), and Cytosine (C) pairs with Guanine (G) via complementary base pairing."
+  },
+  {
+    id: "g9-bio-5",
+    question: "What is the process by which a cell makes a protein from an mRNA template?",
+    options: ["Transcription", "Replication", "Translation", "Transduction"],
+    correctIndex: 2,
+    explanation: "Translation occurs at ribosomes: mRNA codons are read and matched to tRNA anticodons, assembling a chain of amino acids (a protein)."
+  },
+  {
+    id: "g9-bio-6",
+    question: "According to Mendel's Law of Segregation, what happens during gamete formation?",
+    options: [
+      "Allele pairs combine from two parents",
+      "Each gamete receives both alleles for a trait",
+      "The two alleles for a trait separate so each gamete receives one",
+      "Dominant alleles are destroyed"
+    ],
+    correctIndex: 2,
+    explanation: "The Law of Segregation states that the two alleles for each trait separate during meiosis so that each gamete carries only one allele per gene."
+  },
+  {
+    id: "g9-bio-7",
+    question: "In a Punnett square cross of Aa × Aa, what fraction of offspring are expected to show the dominant phenotype?",
+    options: ["1/4", "1/2", "3/4", "All of them"],
+    correctIndex: 2,
+    explanation: "Aa × Aa gives AA (1/4), Aa (2/4), aa (1/4). AA and Aa both express the dominant phenotype — that's 3 out of 4, or 3/4."
+  },
+  {
+    id: "g9-bio-8",
+    question: "What is the net gain of ATP molecules from one glucose molecule during glycolysis alone?",
+    options: ["2 ATP", "36–38 ATP", "10 ATP", "0 ATP"],
+    correctIndex: 0,
+    explanation: "Glycolysis (in the cytoplasm) produces a net gain of 2 ATP per glucose molecule. The full aerobic process (with the Krebs cycle) yields 36–38 ATP total."
+  },
+  {
+    id: "g9-bio-9",
+    question: "Which theory explains how eukaryotic organelles like mitochondria evolved?",
+    options: [
+      "Cell theory",
+      "Germ theory",
+      "Endosymbiotic theory",
+      "Evolutionary synthesis"
+    ],
+    correctIndex: 2,
+    explanation: "The endosymbiotic theory proposes that mitochondria and chloroplasts were once free-living bacteria that were engulfed by a larger host cell and became permanent organelles."
+  },
+  {
+    id: "g9-bio-10",
+    question: "What is natural selection?",
+    options: [
+      "Random changes in DNA",
+      "A process where organisms with favorable traits reproduce more successfully",
+      "The deliberate breeding of plants and animals",
+      "Movement of genes between populations"
+    ],
+    correctIndex: 1,
+    explanation: "Natural selection is the mechanism of evolution where individuals with heritable traits better suited to their environment survive and reproduce more, passing those traits on."
+  },
+  {
+    id: "g9-bio-11",
+    question: "Which of the following best describes an enzyme?",
+    options: [
+      "A lipid that stores energy",
+      "A biological catalyst that speeds up chemical reactions",
+      "A sugar that provides immediate energy",
+      "A molecule that carries oxygen in the blood"
+    ],
+    correctIndex: 1,
+    explanation: "Enzymes are proteins that act as biological catalysts — they lower the activation energy of reactions without being consumed, speeding up metabolic processes."
+  },
+  {
+    id: "g9-bio-12",
+    question: "Where does the Krebs (citric acid) cycle take place?",
+    options: ["Cytoplasm", "Nucleus", "Mitochondrial matrix", "Ribosome"],
+    correctIndex: 2,
+    explanation: "The Krebs cycle occurs in the mitochondrial matrix, producing NADH, FADH₂, and CO₂ as part of aerobic cellular respiration."
+  },
+  {
+    id: "g9-bio-13",
+    question: "What type of mutation involves a single nucleotide change in the DNA sequence?",
+    options: ["Chromosomal mutation", "Frameshift mutation", "Point mutation", "Deletion"],
+    correctIndex: 2,
+    explanation: "A point mutation is a substitution of one nucleotide base for another. Depending on the position, it may be silent (same amino acid), missense (different amino acid), or nonsense (stop codon)."
+  },
+  {
+    id: "g9-bio-14",
+    question: "What is the role of mRNA in protein synthesis?",
+    options: [
+      "It stores long-term genetic information",
+      "It carries amino acids to the ribosome",
+      "It carries the genetic code from the nucleus to the ribosome",
+      "It catalyzes the joining of amino acids"
+    ],
+    correctIndex: 2,
+    explanation: "mRNA (messenger RNA) is transcribed from DNA in the nucleus and carries the genetic instructions to ribosomes in the cytoplasm, where it is translated into a protein."
+  },
+  {
+    id: "g9-bio-15",
+    question: "Which of the following provides evidence for evolution?",
+    options: [
+      "All organisms have different cell structures",
+      "Fossil records, comparative anatomy, and DNA similarities",
+      "Species never change over time",
+      "Organisms are too complex to have evolved"
+    ],
+    correctIndex: 1,
+    explanation: "Multiple lines of evidence support evolution: the fossil record shows change over time; homologous structures show common ancestry; and DNA comparisons reveal evolutionary relationships."
+  }
+];
+
+// ─────────────────────────────────────────────
 //  SUBJECTS & HELPER
 // ─────────────────────────────────────────────
 export const subjects = [
@@ -1099,7 +1386,8 @@ export const subjects = [
   { id: "geography", label: "Geography", emoji: "🌍", color: "#10b981" },
   { id: "history",   label: "History",   emoji: "📜", color: "#ef4444" },
   { id: "science",   label: "Science",   emoji: "🔬", color: "#3b82f6" },
-  { id: "english",   label: "English",   emoji: "📚", color: "#8b5cf6" }
+  { id: "english",   label: "English",   emoji: "📚", color: "#8b5cf6" },
+  { id: "biology",   label: "Biology",   emoji: "🧬", color: "#ec4899" }
 ];
 
 /** Seeded PRNG (xorshift32) — deterministic for a given seed */
@@ -1122,11 +1410,11 @@ function seededShuffle(array, seed) {
   return arr;
 }
 
-const subjectSeedOffset = { math: 0, geography: 1e4, history: 2e4, science: 3e4, english: 4e4 };
+const subjectSeedOffset = { math: 0, geography: 1e4, history: 2e4, science: 3e4, english: 4e4, biology: 5e4 };
 
 const bankMap = {
-  6: { math: grade6Math, geography: grade6Geography, history: grade6History, science: grade6Science, english: grade6English },
-  9: { math: grade9Math, geography: grade9Geography, history: grade9History, science: grade9Science, english: grade9English }
+  6: { math: grade6Math, geography: grade6Geography, history: grade6History, science: grade6Science, english: grade6English, biology: grade6Biology },
+  9: { math: grade9Math, geography: grade9Geography, history: grade9History, science: grade9Science, english: grade9English, biology: grade9Biology }
 };
 
 /**
@@ -1137,5 +1425,5 @@ export function getQuestions(grade, subject) {
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // "20260315"
   const seed = parseInt(today, 10) + grade * 1e6 + (subjectSeedOffset[subject] ?? 0);
   const bank = bankMap[grade]?.[subject] ?? [];
-  return seededShuffle(bank, seed).slice(0, 10);
+  return seededShuffle(bank, seed).slice(0, 15);
 }
