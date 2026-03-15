@@ -14,7 +14,8 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
   const [bonusValues, setBonusValues] = useState({ daughter1: '', daughter2: '' });
 
   // Settings
-  const [mpcInput, setMpcInput] = useState(String(settings.minutesPerCorrect));
+  const [mpsInput, setMpsInput] = useState(String(settings.minutesPerSession));
+  const [dailyMaxInput, setDailyMaxInput] = useState(String(settings.dailyMax));
   const [newPin, setNewPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [settingMsg, setSettingMsg] = useState('');
@@ -58,11 +59,12 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
     setBonusValues(prev => ({ ...prev, [key]: '' }));
   }
 
-  function handleSaveMpc() {
-    const val = parseInt(mpcInput, 10);
-    if (!val || val <= 0) { setSettingMsg('Enter a positive number.'); return; }
-    onUpdateSettings(prev => ({ ...prev, minutesPerCorrect: val }));
-    setSettingMsg('✓ Minutes per correct answer updated!');
+  function handleSaveEarning() {
+    const mps = parseInt(mpsInput, 10);
+    const dm = parseInt(dailyMaxInput, 10);
+    if (!mps || mps <= 0 || !dm || dm <= 0) { setSettingMsg('Enter positive numbers.'); return; }
+    onUpdateSettings(prev => ({ ...prev, minutesPerSession: mps, dailyMax: dm }));
+    setSettingMsg('✓ Earning settings updated!');
     setTimeout(() => setSettingMsg(''), 3000);
   }
 
@@ -255,14 +257,23 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
         <h3>⚙️ Settings</h3>
 
         <div className="settings-row">
-          <label>Minutes per correct answer:</label>
+          <label>Minutes per session completed:</label>
           <input
             type="number"
             min="1"
-            value={mpcInput}
-            onChange={e => setMpcInput(e.target.value)}
+            value={mpsInput}
+            onChange={e => setMpsInput(e.target.value)}
           />
-          <button onClick={handleSaveMpc}>Save</button>
+        </div>
+        <div className="settings-row">
+          <label>Daily maximum (minutes):</label>
+          <input
+            type="number"
+            min="1"
+            value={dailyMaxInput}
+            onChange={e => setDailyMaxInput(e.target.value)}
+          />
+          <button onClick={handleSaveEarning}>Save</button>
         </div>
 
         <div style={{ borderTop: '1px solid #e5e7eb', margin: '16px 0' }} />

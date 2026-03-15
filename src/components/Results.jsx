@@ -11,7 +11,7 @@ function ConfettiPiece({ style }) {
 }
 
 export default function Results({ profile, subject, result, onPlayAgain, onChooseSubject }) {
-  const { score, totalQuestions, earned, newBalance } = result;
+  const { score, totalQuestions, earned, newBalance, todayEarned, dailyMax, cappedOut } = result;
   const subjectInfo = subjects.find(s => s.id === subject);
   const percent = Math.round((score / totalQuestions) * 100);
 
@@ -131,9 +131,29 @@ export default function Results({ profile, subject, result, onPlayAgain, onChoos
         </div>
 
         {/* Earned */}
-        <div className="results__earned">+{earned} minutes earned ⏱</div>
+        {cappedOut ? (
+          <div className="results__earned results__earned--capped">
+            🏁 Daily max reached — great work today!
+          </div>
+        ) : (
+          <div className="results__earned">+{earned} minutes earned ⏱</div>
+        )}
+
+        {/* Daily progress bar */}
+        <div className="results__daily">
+          <div className="results__daily-label">
+            Today: <strong>{todayEarned}</strong> / {dailyMax} min
+          </div>
+          <div className="results__daily-bar">
+            <div
+              className="results__daily-fill"
+              style={{ width: `${Math.min(100, (todayEarned / dailyMax) * 100)}%` }}
+            />
+          </div>
+        </div>
+
         <div className="results__total">
-          New balance: <strong>{newBalance} minutes</strong>
+          Total balance: <strong>{newBalance} minutes</strong>
         </div>
 
         {/* Actions */}

@@ -668,7 +668,35 @@ body {
   font-size: 1.4rem;
   font-weight: 800;
   color: #059669;
+  margin-bottom: 16px;
+}
+.results__earned--capped {
+  color: #7c3aed;
+  font-size: 1.1rem;
+}
+
+.results__daily {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 16px;
+}
+.results__daily-label {
+  font-size: 0.9rem;
+  color: #6b7280;
   margin-bottom: 6px;
+  text-align: left;
+}
+.results__daily-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.results__daily-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 99px;
+  transition: width 0.6s ease;
 }
 
 .results__total {

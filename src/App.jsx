@@ -29,7 +29,8 @@ const defaultProfiles = {
 };
 
 const defaultSettings = {
-  minutesPerCorrect: 5,
+  minutesPerSession: 10,
+  dailyMax: 90,
   parentPin: '1234'
 };
 
@@ -89,9 +90,19 @@ export default function App() {
   }
 
   function finishQuiz(score, totalQuestions) {
-    const earned = score * settings.minutesPerCorrect;
     const profileKey = activeProfile;
-    const newBalance = profiles[profileKey].balance + earned;
+    const profile = profiles[profileKey];
+
+    // Sum minutes already earned today (quiz sessions only, not bonuses)
+    const today = new Date().toISOString().slice(0, 10);
+    const todayEarned = profile.history
+      .filter(h => h.date.startsWith(today) && !h.type && h.earned > 0)
+      .reduce((sum, h) => sum + h.earned, 0);
+
+    const remaining = Math.max(0, settings.dailyMax - todayEarned);
+    const earned = Math.min(settings.minutesPerSession, remaining);
+    const newBalance = profile.balance + earned;
+    const newTodayEarned = todayEarned + earned;
 
     const historyEntry = {
       date: new Date().toISOString(),
@@ -111,7 +122,15 @@ export default function App() {
       }
     }));
 
-    setQuizResult({ score, totalQuestions, earned, newBalance });
+    setQuizResult({
+      score,
+      totalQuestions,
+      earned,
+      newBalance,
+      todayEarned: newTodayEarned,
+      dailyMax: settings.dailyMax,
+      cappedOut: remaining === 0
+    });
     setView('results');
   }
 
