@@ -11,7 +11,8 @@ function ConfettiPiece({ style }) {
 }
 
 export default function Results({ profile, subject, result, onPlayAgain, onChooseSubject }) {
-  const { score, totalQuestions, earned, newBalance, todayEarned, dailyMax, cappedOut } = result;
+  const { score, totalQuestions, earned, moneyEarned, newBalance, newEarnings,
+          todayEarned, dailyMax, cappedOut, qualifies, alreadyEarned } = result;
   const subjectInfo = subjects.find(s => s.id === subject);
   const percent = Math.round((score / totalQuestions) * 100);
 
@@ -130,13 +131,25 @@ export default function Results({ profile, subject, result, onPlayAgain, onChoos
           </div>
         </div>
 
-        {/* Earned */}
-        {cappedOut ? (
-          <div className="results__earned results__earned--capped">
-            🏁 Daily max reached — great work today!
+        {/* Reward status */}
+        {!qualifies ? (
+          <div className="results__reward-msg results__reward-msg--retry">
+            📉 Score B or higher (8/10) to earn rewards. Try again!
+          </div>
+        ) : alreadyEarned ? (
+          <div className="results__reward-msg results__reward-msg--done">
+            ✅ Great score! Rewards already earned for this subject today.
+          </div>
+        ) : cappedOut ? (
+          <div className="results__reward-msg results__reward-msg--done">
+            🏁 Daily screen time max reached — but you earned $0.10! 💰
           </div>
         ) : (
-          <div className="results__earned">+{earned} minutes earned ⏱</div>
+          <div className="results__reward-earned">
+            <span>+{earned} min ⏱</span>
+            <span className="results__reward-divider">·</span>
+            <span>+$0.10 💰</span>
+          </div>
         )}
 
         {/* Daily progress bar */}
@@ -153,7 +166,9 @@ export default function Results({ profile, subject, result, onPlayAgain, onChoos
         </div>
 
         <div className="results__total">
-          Total balance: <strong>{newBalance} minutes</strong>
+          <span>⏱ <strong>{newBalance} min</strong></span>
+          <span style={{ margin: '0 12px', color: '#d1d5db' }}>|</span>
+          <span>💰 <strong>${(newEarnings ?? 0).toFixed(2)}</strong></span>
         </div>
 
         {/* Actions */}

@@ -18,16 +18,23 @@ export default function Dashboard({ profile, onSelectSubject, onBack, onParentMo
         </div>
       </div>
 
-      {/* Balance Card */}
-      <div
-        className="dashboard__balance-card"
-        style={{ background: `linear-gradient(135deg, ${profile.color}, ${adjustColor(profile.color)})` }}
-      >
-        <div className="dashboard__balance-glow" />
-        <div className="dashboard__balance-label">Screen Time Earned</div>
-        <div className="dashboard__balance-number">{profile.balance}</div>
-        <div className="dashboard__balance-unit">
-          minute{profile.balance !== 1 ? 's' : ''} ⏱
+      {/* Balance Cards */}
+      <div className="dashboard__balances">
+        <div
+          className="dashboard__balance-card"
+          style={{ background: `linear-gradient(135deg, ${profile.color}, ${adjustColor(profile.color)})` }}
+        >
+          <div className="dashboard__balance-glow" />
+          <div className="dashboard__balance-label">Screen Time</div>
+          <div className="dashboard__balance-number">{profile.balance}</div>
+          <div className="dashboard__balance-unit">
+            minute{profile.balance !== 1 ? 's' : ''} ⏱
+          </div>
+        </div>
+        <div className="dashboard__balance-card dashboard__balance-card--money">
+          <div className="dashboard__balance-label">Earnings</div>
+          <div className="dashboard__balance-number">${((profile.earnings ?? 0)).toFixed(2)}</div>
+          <div className="dashboard__balance-unit">dollars 💰</div>
         </div>
       </div>
 

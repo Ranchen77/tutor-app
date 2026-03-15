@@ -3,7 +3,7 @@ import { subjects } from '../data/questions';
 
 const PIN_LENGTH = 4;
 
-export default function ParentPanel({ profiles, settings, onUpdateSettings, onRedeem, onAddBonus, onBack }) {
+export default function ParentPanel({ profiles, settings, onUpdateSettings, onRedeem, onAddBonus, onPayOut, onBack }) {
   const [unlocked, setUnlocked] = useState(false);
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
@@ -97,9 +97,14 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
       text = `${profileName} redeemed ${Math.abs(item.earned)} min`;
     } else if (item.type === 'bonus') {
       text = `${profileName} got ${item.earned} bonus min`;
+    } else if (item.type === 'payout') {
+      text = `${profileName} paid out $${Math.abs(item.moneyEarned ?? 0).toFixed(2)}`;
     } else if (item.subject) {
       const sub = subjects.find(s => s.id === item.subject);
-      text = `${profileName} scored ${item.score}/${item.total} in ${sub?.label ?? item.subject} (+${item.earned} min)`;
+      const rewards = item.rewardEarned
+        ? `+${item.earned} min, +$${(item.moneyEarned ?? 0).toFixed(2)}`
+        : 'no reward';
+      text = `${profileName} scored ${item.score}/${item.total} in ${sub?.label ?? item.subject} (${rewards})`;
     } else {
       text = `${profileName}: ${item.earned > 0 ? '+' : ''}${item.earned} min`;
     }
@@ -227,6 +232,18 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
                 Add ✨
               </button>
             </div>
+
+            {/* Earnings */}
+            <div className="kid-card__earnings">
+              💰 <strong>${((data.earnings ?? 0).toFixed(2))}</strong> earned
+            </div>
+            <button
+              className="btn-payout"
+              onClick={() => onPayOut(key)}
+              disabled={(data.earnings ?? 0) === 0}
+            >
+              Pay Out 💵
+            </button>
           </div>
         ))}
       </div>

@@ -247,14 +247,23 @@ body {
   gap: 12px;
 }
 
+.dashboard__balances {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
 .dashboard__balance-card {
   border-radius: 20px;
-  padding: 32px;
+  padding: 28px 20px;
   text-align: center;
-  margin-bottom: 28px;
   position: relative;
   overflow: hidden;
   color: white;
+}
+.dashboard__balance-card--money {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
 .dashboard__balance-card::after {
@@ -664,15 +673,36 @@ body {
   margin-top: 4px;
 }
 
-.results__earned {
-  font-size: 1.4rem;
+.results__reward-earned {
+  font-size: 1.5rem;
   font-weight: 800;
   color: #059669;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.results__earned--capped {
-  color: #7c3aed;
-  font-size: 1.1rem;
+.results__reward-divider {
+  color: #d1d5db;
+}
+.results__reward-msg {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.results__reward-msg--retry {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1.5px solid #fca5a5;
+}
+.results__reward-msg--done {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1.5px solid #86efac;
 }
 
 .results__daily {
@@ -927,8 +957,18 @@ body {
 }
 .kid-action-row button:hover { opacity: 0.85; }
 
-.btn-redeem { background: #fef3c7; color: #92400e; }
-.btn-add    { background: #d1fae5; color: #065f46; }
+.btn-redeem  { background: #fef3c7; color: #92400e; }
+.btn-add     { background: #d1fae5; color: #065f46; }
+.btn-payout  { background: #fef9c3; color: #713f12; width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+.btn-payout:disabled { opacity: 0.4; cursor: default; }
+.btn-payout:not(:disabled):hover { background: #fde047; }
+
+.kid-card__earnings {
+  margin-top: 12px;
+  font-size: 1.1rem;
+  color: #92400e;
+  text-align: center;
+}
 
 .parent-panel__section {
   background: white;

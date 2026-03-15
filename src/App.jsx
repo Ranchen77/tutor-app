@@ -16,6 +16,7 @@ const defaultProfiles = {
     color: '#0891b2',
     colorLight: '#cffafe',
     balance: 0,
+    earnings: 0,
     history: []
   },
   daughter2: {
@@ -25,6 +26,7 @@ const defaultProfiles = {
     color: '#7c3aed',
     colorLight: '#ede9fe',
     balance: 0,
+    earnings: 0,
     history: []
   }
 };
@@ -93,17 +95,30 @@ export default function App() {
   function finishQuiz(score, totalQuestions) {
     const profileKey = activeProfile;
     const profile = profiles[profileKey];
-
-    // Sum minutes already earned today (quiz sessions only, not bonuses)
     const today = new Date().toISOString().slice(0, 10);
-    const todayEarned = profile.history
+
+    // Grade must be B or better (≥80%) to earn rewards
+    const percent = Math.round((score / totalQuestions) * 100);
+    const qualifies = percent >= 80;
+
+    // Has this subject already been rewarded today?
+    const alreadyEarned = profile.history.some(
+      h => h.date.startsWith(today) && h.subject === activeSubject && h.rewardEarned
+    );
+
+    const shouldReward = qualifies && !alreadyEarned;
+
+    // Minutes
+    const todayMinutes = profile.history
       .filter(h => h.date.startsWith(today) && !h.type && h.earned > 0)
       .reduce((sum, h) => sum + h.earned, 0);
-
-    const remaining = Math.max(0, settings.dailyMax - todayEarned);
-    const earned = Math.min(settings.minutesPerSession, remaining);
+    const remaining = Math.max(0, settings.dailyMax - todayMinutes);
+    const earned = shouldReward ? Math.min(settings.minutesPerSession, remaining) : 0;
     const newBalance = profile.balance + earned;
-    const newTodayEarned = todayEarned + earned;
+
+    // Money: $0.10 per qualifying section, once per section
+    const moneyEarned = shouldReward ? 0.10 : 0;
+    const newEarnings = parseFloat(((profile.earnings ?? 0) + moneyEarned).toFixed(2));
 
     const historyEntry = {
       date: new Date().toISOString(),
@@ -111,7 +126,9 @@ export default function App() {
       score,
       total: totalQuestions,
       earned,
-      balance: newBalance
+      moneyEarned,
+      balance: newBalance,
+      rewardEarned: shouldReward
     };
 
     setProfiles(prev => ({
@@ -119,6 +136,7 @@ export default function App() {
       [profileKey]: {
         ...prev[profileKey],
         balance: newBalance,
+        earnings: newEarnings,
         history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
       }
     }));
@@ -127,14 +145,17 @@ export default function App() {
       score,
       totalQuestions,
       earned,
+      moneyEarned,
       newBalance,
-      todayEarned: newTodayEarned,
+      newEarnings,
+      todayEarned: todayMinutes + earned,
       dailyMax: settings.dailyMax,
-      cappedOut: remaining === 0
+      cappedOut: remaining === 0,
+      qualifies,
+      alreadyEarned
     });
     setView('results');
 
-    // Notify parent by SMS
     notifyParent(profile.name, activeSubject, score, totalQuestions);
   }
 
@@ -156,6 +177,28 @@ export default function App() {
         [profileKey]: {
           ...prev[profileKey],
           balance: current - deduct,
+          history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
+        }
+      };
+    });
+  }
+
+  function payOutEarnings(profileKey) {
+    setProfiles(prev => {
+      const amount = prev[profileKey].earnings ?? 0;
+      if (amount === 0) return prev;
+      const historyEntry = {
+        date: new Date().toISOString(),
+        subject: null, score: null, total: null,
+        earned: 0, moneyEarned: -amount,
+        balance: prev[profileKey].balance,
+        type: 'payout'
+      };
+      return {
+        ...prev,
+        [profileKey]: {
+          ...prev[profileKey],
+          earnings: 0,
           history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
         }
       };
@@ -232,6 +275,7 @@ export default function App() {
           onUpdateSettings={setSettings}
           onRedeem={redeemTime}
           onAddBonus={addBonus}
+          onPayOut={payOutEarnings}
           onBack={goHome}
         />
       )}
