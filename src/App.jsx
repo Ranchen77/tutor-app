@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from './firebase';
 import { notifyParent } from './utils/notify';
 import './index.css';
 import { useAuth } from './contexts/AuthContext';
@@ -42,66 +44,89 @@ const defaultSettings = {
   parentPin: '1234'
 };
 
-// ── Views ──────────────────────────────────────
-// 'home' | 'dashboard' | 'quiz' | 'results' | 'parent' | 'stats'
-
+// ── Root: handles auth routing only ───────────
 export default function App() {
   const { user } = useAuth();
 
-  // Still resolving auth state — render nothing to avoid flash
-  if (user === undefined) return null;
+  // Auth state still resolving — blank screen to avoid flash
+  if (user === undefined) return <div className="app-loading" />;
 
-  // Not signed in — show auth screen
+  // Not signed in
   if (user === null) return <AuthScreen />;
 
-  // ── Persistent state (with daily reset on load) ─
-  const [profiles, setProfiles] = useState(() => {
-    try {
-      const today = new Date().toISOString().slice(0, 10);
-      const savedSettings = localStorage.getItem('tutorSettings');
-      const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
-      const savedProfiles = localStorage.getItem('tutorProfiles');
-      const saved = savedProfiles ? JSON.parse(savedProfiles) : defaultProfiles;
+  // Signed in — render the full app
+  return <AuthenticatedApp user={user} />;
+}
 
-      if (settings.lastResetDate !== today) {
-        // New day — reset balance and earnings for both profiles
-        return {
-          daughter1: { ...saved.daughter1, balance: 0, earnings: 0 },
-          daughter2: { ...saved.daughter2, balance: 0, earnings: 0 }
-        };
-      }
-      return saved;
-    } catch {
-      return defaultProfiles;
-    }
-  });
+// ── Authenticated app: all hooks live here ─────
+function AuthenticatedApp({ user }) {
+  const [profiles, setProfiles] = useState(null);   // null = loading
+  const [settings, setSettings] = useState(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  const [settings, setSettings] = useState(() => {
-    try {
-      const today = new Date().toISOString().slice(0, 10);
-      const saved = localStorage.getItem('tutorSettings');
-      const s = saved ? JSON.parse(saved) : defaultSettings;
-      return { ...s, lastResetDate: today };
-    } catch {
-      return { ...defaultSettings, lastResetDate: new Date().toISOString().slice(0, 10) };
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('tutorProfiles', JSON.stringify(profiles));
-  }, [profiles]);
-
-  useEffect(() => {
-    localStorage.setItem('tutorSettings', JSON.stringify(settings));
-  }, [settings]);
-
-  // ── Navigation state ─────────────────────────
+  // Navigation state
   const [view, setView] = useState('home');
-  const [activeProfile, setActiveProfile] = useState(null); // 'daughter1' | 'daughter2'
+  const [activeProfile, setActiveProfile] = useState(null);
   const [activeSubject, setActiveSubject] = useState(null);
   const [quizResult, setQuizResult] = useState(null);
 
-  // ── Navigation helpers ────────────────────────
+  // ── Load from Firestore on sign-in ─────────
+  useEffect(() => {
+    const docRef = doc(db, 'users', user.uid);
+    getDoc(docRef)
+      .then(snap => {
+        const today = new Date().toISOString().slice(0, 10);
+        if (snap.exists()) {
+          const data = snap.data();
+          const savedSettings = { ...defaultSettings, ...data.settings };
+          // Merge saved profiles with defaults to ensure new fields are present
+          let savedProfiles = {
+            daughter1: { ...defaultProfiles.daughter1, ...data.profiles?.daughter1 },
+            daughter2: { ...defaultProfiles.daughter2, ...data.profiles?.daughter2 }
+          };
+          // Daily reset
+          if (savedSettings.lastResetDate !== today) {
+            savedProfiles = {
+              daughter1: { ...savedProfiles.daughter1, balance: 0, earnings: 0 },
+              daughter2: { ...savedProfiles.daughter2, balance: 0, earnings: 0 }
+            };
+          }
+          setProfiles(savedProfiles);
+          setSettings({ ...savedSettings, lastResetDate: today });
+        } else {
+          // First sign-in — initialize with defaults
+          const today = new Date().toISOString().slice(0, 10);
+          setProfiles(defaultProfiles);
+          setSettings({ ...defaultSettings, lastResetDate: today });
+        }
+        setDataLoaded(true);
+      })
+      .catch(() => {
+        // Network error fallback — use defaults so the app isn't broken
+        const today = new Date().toISOString().slice(0, 10);
+        setProfiles(defaultProfiles);
+        setSettings({ ...defaultSettings, lastResetDate: today });
+        setDataLoaded(true);
+      });
+  }, [user.uid]);
+
+  // ── Save to Firestore on every change ──────
+  useEffect(() => {
+    if (!dataLoaded || !profiles || !settings) return;
+    const docRef = doc(db, 'users', user.uid);
+    setDoc(docRef, { profiles, settings }).catch(() => {});
+  }, [profiles, settings, dataLoaded, user.uid]);
+
+  // ── Loading screen ─────────────────────────
+  if (!dataLoaded) {
+    return (
+      <div className="app-loading">
+        <div className="app-loading__spinner" />
+      </div>
+    );
+  }
+
+  // ── Navigation helpers ─────────────────────
   function goHome() {
     setView('home');
     setActiveProfile(null);
@@ -260,7 +285,7 @@ export default function App() {
     }));
   }
 
-  // ── Render ────────────────────────────────────
+  // ── Render ─────────────────────────────────
   return (
     <div className="app">
       {view === 'home' && (
