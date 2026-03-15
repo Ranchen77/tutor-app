@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { notifyParent } from './utils/notify';
 import './index.css';
 import ProfileSelect from './components/ProfileSelect';
 import Dashboard from './components/Dashboard';
@@ -132,6 +133,9 @@ export default function App() {
       cappedOut: remaining === 0
     });
     setView('results');
+
+    // Notify parent by SMS
+    notifyParent(profile.name, activeSubject, score, totalQuestions);
   }
 
   function redeemTime(profileKey, minutes) {
