@@ -238,6 +238,13 @@ export default function App() {
     }));
   }
 
+  function updatePhoto(profileKey, photoUrl) {
+    setProfiles(prev => ({
+      ...prev,
+      [profileKey]: { ...prev[profileKey], photoUrl: photoUrl ?? undefined }
+    }));
+  }
+
   // ── Render ────────────────────────────────────
   return (
     <div className="app">
@@ -247,6 +254,7 @@ export default function App() {
           onSelect={selectProfile}
           onParentMode={() => setView('parent')}
           onUpdateAvatar={updateAvatar}
+          onUpdatePhoto={updatePhoto}
         />
       )}
 
