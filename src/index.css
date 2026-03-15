@@ -111,6 +111,7 @@ body {
 .profile-select {
   width: 100%;
   max-width: 780px;
+  padding-top: 48px;
 }
 
 .profile-select__header {
