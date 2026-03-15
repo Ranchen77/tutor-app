@@ -10,6 +10,7 @@ function CropModal({ imageSrc, onConfirm, onCancel }) {
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const [scale, setScale] = useState(1);
+  const [fitScale, setFitScale] = useState(1);
   const [ready, setReady] = useState(false);
   const dragging = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
@@ -17,7 +18,9 @@ function CropModal({ imageSrc, onConfirm, onCancel }) {
   function handleImgLoad() {
     const img = imgRef.current;
     if (!img) return;
+    // Scale so the image just fills the circle, then store as the baseline
     const fit = Math.max(CROP_SIZE / img.naturalWidth, CROP_SIZE / img.naturalHeight);
+    setFitScale(fit);
     setScale(fit);
     setReady(true);
   }
@@ -89,9 +92,9 @@ function CropModal({ imageSrc, onConfirm, onCancel }) {
           <span className="crop-zoom__icon">−</span>
           <input
             type="range"
-            min={0.3}
-            max={4}
-            step={0.01}
+            min={fitScale * 0.8}
+            max={fitScale * 4}
+            step={fitScale * 0.02}
             value={scale}
             onChange={e => setScale(parseFloat(e.target.value))}
           />
