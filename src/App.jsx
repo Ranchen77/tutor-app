@@ -17,6 +17,7 @@ const defaultProfiles = {
     colorLight: '#cffafe',
     balance: 0,
     earnings: 0,
+    avatarIndex: 0,
     history: []
   },
   daughter2: {
@@ -27,6 +28,7 @@ const defaultProfiles = {
     colorLight: '#ede9fe',
     balance: 0,
     earnings: 0,
+    avatarIndex: 1,
     history: []
   }
 };
@@ -229,6 +231,13 @@ export default function App() {
     });
   }
 
+  function updateAvatar(profileKey, avatarIndex) {
+    setProfiles(prev => ({
+      ...prev,
+      [profileKey]: { ...prev[profileKey], avatarIndex }
+    }));
+  }
+
   // ── Render ────────────────────────────────────
   return (
     <div className="app">
@@ -237,6 +246,7 @@ export default function App() {
           profiles={profiles}
           onSelect={selectProfile}
           onParentMode={() => setView('parent')}
+          onUpdateAvatar={updateAvatar}
         />
       )}
 

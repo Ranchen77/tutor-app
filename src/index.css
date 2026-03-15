@@ -159,6 +159,89 @@ body {
   box-shadow: 0 16px 48px rgba(0,0,0,0.2);
 }
 
+.profile-card__avatar-area {
+  margin-bottom: 16px;
+}
+
+.profile-card__avatar-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile-card__avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.profile-card__avatar svg {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: block;
+}
+
+.profile-card__emoji-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  font-size: 1.5rem;
+  line-height: 1;
+  background: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.avatar-arrow {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+}
+
+.avatar-arrow:hover {
+  color: #1e1b4b;
+  background: rgba(0,0,0,0.06);
+}
+
+.avatar-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.avatar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #d1d5db;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.avatar-dot.active {
+  background: var(--profile-color);
+  transform: scale(1.3);
+}
+
 .profile-card__emoji {
   font-size: 5rem;
   display: block;
