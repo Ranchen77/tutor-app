@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { AVATARS } from './Avatars';
-import { ChevronLeft, ChevronRight } from './Icons';
+import { ChevronLeft, ChevronRight, Lock, Camera } from './Icons';
 
 const AVATAR_COUNT = AVATARS.length;
 const CROP_SIZE = 280; // px — square crop window
@@ -164,7 +164,7 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
                 <img src={data.photoUrl} alt={data.name} className="profile-card__photo" />
                 <span className="profile-card__emoji-badge">{data.emoji}</span>
                 <button className="photo-change-btn" onClick={() => fileInputRef.current.click()} title="Change photo">
-                  📷
+                  <Camera size={14} />
                 </button>
               </div>
             </div>
@@ -181,7 +181,7 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
                 <AvatarComponent />
                 <span className="profile-card__emoji-badge">{data.emoji}</span>
                 <button className="photo-change-btn" onClick={() => fileInputRef.current.click()} title="Upload photo">
-                  📷
+                  <Camera size={14} />
                 </button>
               </div>
 
@@ -262,7 +262,7 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
 
       <div className="profile-select__footer">
         <button className="parent-link" onClick={onParentMode}>
-          🔒 Parent Mode
+          <Lock size={15} /> Parent Mode
         </button>
       </div>
     </div>
