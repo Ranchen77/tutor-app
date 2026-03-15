@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { subjects } from '../data/questions';
 import { ArrowLeft, Lock, Unlock, Backspace } from './Icons';
+import { useAuth } from '../contexts/AuthContext';
 
 const PIN_LENGTH = 4;
 
 export default function ParentPanel({ profiles, settings, onUpdateSettings, onRedeem, onAddBonus, onPayOut, onBack }) {
+  const { logOut } = useAuth();
   const [unlocked, setUnlocked] = useState(false);
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
@@ -173,13 +175,14 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
       <div className="parent-panel__header">
         <button className="back-btn" onClick={onBack}>← Back</button>
         <h2 className="parent-panel__title">Parent Panel</h2>
-        <button
-          className="back-btn"
-          style={{ marginLeft: 'auto' }}
-          onClick={() => setUnlocked(false)}
-        >
-          <Lock size={14} /> Lock
-        </button>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          <button className="back-btn" onClick={() => setUnlocked(false)}>
+            <Lock size={14} /> Lock
+          </button>
+          <button className="back-btn" style={{ color: '#dc2626', borderColor: 'rgba(220,38,38,0.3)' }} onClick={logOut}>
+            Sign out
+          </button>
+        </div>
       </div>
 
       {/* Kids' Balance Cards */}

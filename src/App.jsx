@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { notifyParent } from './utils/notify';
 import './index.css';
+import { useAuth } from './contexts/AuthContext';
+import AuthScreen from './components/AuthScreen';
 import ProfileSelect from './components/ProfileSelect';
 import Dashboard from './components/Dashboard';
 import Quiz from './components/Quiz';
@@ -44,6 +46,14 @@ const defaultSettings = {
 // 'home' | 'dashboard' | 'quiz' | 'results' | 'parent' | 'stats'
 
 export default function App() {
+  const { user } = useAuth();
+
+  // Still resolving auth state — render nothing to avoid flash
+  if (user === undefined) return null;
+
+  // Not signed in — show auth screen
+  if (user === null) return <AuthScreen />;
+
   // ── Persistent state (with daily reset on load) ─
   const [profiles, setProfiles] = useState(() => {
     try {
