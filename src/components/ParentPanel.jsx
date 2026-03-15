@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { subjects } from '../data/questions';
+import { ArrowLeft, Lock, Unlock, Backspace } from './Icons';
 
 const PIN_LENGTH = 4;
 
@@ -132,12 +133,12 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
     return (
       <div className="parent-panel">
         <div className="parent-panel__header">
-          <button className="back-btn" onClick={onBack}>← Back</button>
+          <button className="back-btn" onClick={onBack}><ArrowLeft size={16} /> Back</button>
           <h2 className="parent-panel__title">Parent Mode</h2>
         </div>
 
         <div className="pin-screen">
-          <div className="pin-screen__lock">🔒</div>
+          <div className="pin-screen__lock"><Lock size={40} /></div>
           <div className="pin-screen__title">Enter PIN</div>
           <div className="pin-screen__subtitle">Enter your 4-digit parent PIN</div>
 
@@ -155,7 +156,7 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
             ))}
             <button className="pin-key" style={{ opacity: 0.3, cursor: 'default' }} disabled />
             <button className="pin-key" onClick={() => handlePinKey('0')}>0</button>
-            <button className="pin-key del" onClick={handlePinDelete}>⌫ Del</button>
+            <button className="pin-key del" onClick={handlePinDelete}><Backspace size={18} /></button>
           </div>
 
           {pinError && (
@@ -171,13 +172,13 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
     <div className="parent-panel">
       <div className="parent-panel__header">
         <button className="back-btn" onClick={onBack}>← Back</button>
-        <h2 className="parent-panel__title">👨‍👩‍👧‍👧 Parent Panel</h2>
+        <h2 className="parent-panel__title">Parent Panel</h2>
         <button
-          className="btn"
-          style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.2)', color: 'white', border: '2px solid rgba(255,255,255,0.4)', padding: '8px 16px', fontSize: '0.85rem' }}
+          className="back-btn"
+          style={{ marginLeft: 'auto' }}
           onClick={() => setUnlocked(false)}
         >
-          🔒 Lock
+          <Lock size={14} /> Lock
         </button>
       </div>
 

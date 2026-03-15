@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getQuestions, subjects } from '../data/questions';
+import { ArrowLeft } from './Icons';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 
@@ -27,7 +28,7 @@ export default function Quiz({ profile, subject, onFinish, onBack }) {
     return (
       <div className="quiz">
         <div className="quiz__header">
-          <button className="back-btn" onClick={onBack}>← Back</button>
+          <button className="back-btn" onClick={onBack}><ArrowLeft size={16} /> Back</button>
           <span className="quiz__title">Loading…</span>
         </div>
       </div>
@@ -71,7 +72,7 @@ export default function Quiz({ profile, subject, onFinish, onBack }) {
     <div className="quiz">
       {/* Header */}
       <div className="quiz__header">
-        <button className="back-btn" onClick={onBack}>← Back</button>
+        <button className="back-btn" onClick={onBack}><ArrowLeft size={16} /> Back</button>
         <span className="quiz__title">
           {profile.emoji} {profile.name} — {subjectInfo?.emoji} {subjectInfo?.label}
         </span>

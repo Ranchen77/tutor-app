@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { AVATARS } from './Avatars';
+import { ChevronLeft, ChevronRight } from './Icons';
 
 const AVATAR_COUNT = AVATARS.length;
 const CROP_SIZE = 280; // px — square crop window
@@ -174,7 +175,7 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
                 className="avatar-arrow"
                 onClick={() => onUpdateAvatar(profileKey, (avatarIdx - 1 + AVATAR_COUNT) % AVATAR_COUNT)}
                 aria-label="Previous avatar"
-              >‹</button>
+              ><ChevronLeft size={20} /></button>
 
               <div className="profile-card__avatar">
                 <AvatarComponent />
@@ -188,7 +189,7 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
                 className="avatar-arrow"
                 onClick={() => onUpdateAvatar(profileKey, (avatarIdx + 1) % AVATAR_COUNT)}
                 aria-label="Next avatar"
-              >›</button>
+              ><ChevronRight size={20} /></button>
             </div>
           )}
 
@@ -238,7 +239,7 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
       <div className="profile-select__header">
         <h1 className="profile-select__title">🎓 Tutor Time!</h1>
         <p className="profile-select__subtitle">
-          Answer questions correctly to earn screen time ⏱
+          Answer questions correctly to earn screen time and allowance
         </p>
       </div>
 

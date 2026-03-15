@@ -1,5 +1,6 @@
 import { AVATARS } from './Avatars';
 import { subjects } from '../data/questions';
+import { ArrowLeft } from './Icons';
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -37,7 +38,7 @@ export default function ProfileStats({ profile, onBack }) {
   return (
     <div className="stats-page">
       {/* Back button above the card */}
-      <button className="stats-back-btn" onClick={onBack}>← Back</button>
+      <button className="stats-back-btn" onClick={onBack}><ArrowLeft size={16} /> Back</button>
 
       {/* Header */}
       <div className="stats-page__header" style={{ '--kid-color': profile.color }}>

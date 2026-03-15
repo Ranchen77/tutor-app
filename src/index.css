@@ -1,13 +1,13 @@
 /* ── CSS Variables ─────────────────────────── */
 :root {
-  --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg: linear-gradient(150deg, #312e81 0%, #4c1d95 40%, #6d28d9 100%);
   --card-bg: white;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.2);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --transition: 0.2s ease;
-  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.1);
+  --shadow-hover: 0 2px 6px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.18);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --transition: 0.18s ease;
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ── Reset & Base ──────────────────────────── */
@@ -60,7 +60,7 @@ body {
 .btn:active { transform: translateY(0); }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   color: white;
 }
 .btn-success {
@@ -85,17 +85,25 @@ body {
 }
 
 .back-btn {
-  background: rgba(255,255,255,0.2);
-  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.28);
   color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 7px 14px 7px 10px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background var(--transition), border-color var(--transition);
+  backdrop-filter: blur(8px);
+  letter-spacing: -0.01em;
 }
-.back-btn:hover { background: rgba(255,255,255,0.35); }
+.back-btn:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.45);
+}
 
 /* ═══════════════════════════════════════════
    PROFILE SELECT
@@ -447,19 +455,26 @@ body {
    PROFILE STATS PAGE
 ═══════════════════════════════════════════ */
 .stats-back-btn {
-  background: rgba(255,255,255,0.2);
-  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.28);
   color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 7px 14px 7px 10px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background var(--transition), border-color var(--transition);
+  backdrop-filter: blur(8px);
+  letter-spacing: -0.01em;
   margin-bottom: 16px;
-  display: inline-block;
 }
-.stats-back-btn:hover { background: rgba(255,255,255,0.35); }
+.stats-back-btn:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.45);
+}
 
 .stats-page {
   width: 100%;
@@ -701,6 +716,33 @@ body {
   line-height: 1;
 }
 
+.dashboard__avatar-wrap {
+  flex-shrink: 0;
+}
+
+.dashboard__avatar-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+
+.dashboard__avatar-svg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+
+.dashboard__avatar-svg svg {
+  width: 48px;
+  height: 48px;
+  display: block;
+}
+
 .dashboard__info h1 {
   color: white;
   font-size: 1.9rem;
@@ -823,20 +865,26 @@ body {
 }
 
 .parent-mode-btn {
-  background: rgba(255,255,255,0.15);
-  border: 2px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.8);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.85);
+  border-radius: 100px;
+  padding: 7px 14px;
+  font-size: 0.825rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition);
-  display: flex;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  backdrop-filter: blur(8px);
+  letter-spacing: -0.01em;
 }
-.parent-mode-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+.parent-mode-btn:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.4);
+  color: white;
+}
 
 /* ═══════════════════════════════════════════
    QUIZ
@@ -1260,6 +1308,10 @@ body {
 .pin-screen__lock {
   font-size: 4rem;
   margin-bottom: 16px;
+  color: white;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
 }
 
 .pin-screen__title {
