@@ -446,6 +446,21 @@ body {
 /* ═══════════════════════════════════════════
    PROFILE STATS PAGE
 ═══════════════════════════════════════════ */
+.stats-back-btn {
+  background: rgba(255,255,255,0.2);
+  border: 2px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  margin-bottom: 16px;
+  display: inline-block;
+}
+.stats-back-btn:hover { background: rgba(255,255,255,0.35); }
+
 .stats-page {
   width: 100%;
   max-width: 680px;

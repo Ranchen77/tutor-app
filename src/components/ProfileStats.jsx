@@ -36,9 +36,11 @@ export default function ProfileStats({ profile, onBack }) {
 
   return (
     <div className="stats-page">
+      {/* Back button above the card */}
+      <button className="stats-back-btn" onClick={onBack}>← Back</button>
+
       {/* Header */}
       <div className="stats-page__header" style={{ '--kid-color': profile.color }}>
-        <button className="back-btn" onClick={onBack}>← Back</button>
         <div className="stats-page__identity">
           <div className="stats-page__avatar">
             {profile.photoUrl
