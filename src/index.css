@@ -424,7 +424,7 @@ body {
   gap: 8px;
   padding: 10px 20px;
   border-radius: 50px;
-  font-size: 1.05rem;
+  font-size: 0.82rem;
   font-weight: 700;
   background: var(--profile-color-light);
   color: var(--profile-color);
