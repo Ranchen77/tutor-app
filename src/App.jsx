@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import Quiz from './components/Quiz';
 import Results from './components/Results';
 import ParentPanel from './components/ParentPanel';
+import ProfileStats from './components/ProfileStats';
 
 // ── Default State ──────────────────────────────
 const defaultProfiles = {
@@ -40,14 +41,26 @@ const defaultSettings = {
 };
 
 // ── Views ──────────────────────────────────────
-// 'home' | 'dashboard' | 'quiz' | 'results' | 'parent'
+// 'home' | 'dashboard' | 'quiz' | 'results' | 'parent' | 'stats'
 
 export default function App() {
-  // ── Persistent state ─────────────────────────
+  // ── Persistent state (with daily reset on load) ─
   const [profiles, setProfiles] = useState(() => {
     try {
-      const saved = localStorage.getItem('tutorProfiles');
-      return saved ? JSON.parse(saved) : defaultProfiles;
+      const today = new Date().toISOString().slice(0, 10);
+      const savedSettings = localStorage.getItem('tutorSettings');
+      const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+      const savedProfiles = localStorage.getItem('tutorProfiles');
+      const saved = savedProfiles ? JSON.parse(savedProfiles) : defaultProfiles;
+
+      if (settings.lastResetDate !== today) {
+        // New day — reset balance and earnings for both profiles
+        return {
+          daughter1: { ...saved.daughter1, balance: 0, earnings: 0 },
+          daughter2: { ...saved.daughter2, balance: 0, earnings: 0 }
+        };
+      }
+      return saved;
     } catch {
       return defaultProfiles;
     }
@@ -55,10 +68,12 @@ export default function App() {
 
   const [settings, setSettings] = useState(() => {
     try {
+      const today = new Date().toISOString().slice(0, 10);
       const saved = localStorage.getItem('tutorSettings');
-      return saved ? JSON.parse(saved) : defaultSettings;
+      const s = saved ? JSON.parse(saved) : defaultSettings;
+      return { ...s, lastResetDate: today };
     } catch {
-      return defaultSettings;
+      return { ...defaultSettings, lastResetDate: new Date().toISOString().slice(0, 10) };
     }
   });
 
@@ -74,7 +89,7 @@ export default function App() {
   const [view, setView] = useState('home');
   const [activeProfile, setActiveProfile] = useState(null); // 'daughter1' | 'daughter2'
   const [activeSubject, setActiveSubject] = useState(null);
-  const [quizResult, setQuizResult] = useState(null); // { score, earned, newBalance }
+  const [quizResult, setQuizResult] = useState(null);
 
   // ── Navigation helpers ────────────────────────
   function goHome() {
@@ -99,18 +114,15 @@ export default function App() {
     const profile = profiles[profileKey];
     const today = new Date().toISOString().slice(0, 10);
 
-    // Grade must be B or better (≥80%) to earn rewards
     const percent = Math.round((score / totalQuestions) * 100);
     const qualifies = percent >= 80;
 
-    // Has this subject already been rewarded today?
     const alreadyEarned = profile.history.some(
       h => h.date.startsWith(today) && h.subject === activeSubject && h.rewardEarned
     );
 
     const shouldReward = qualifies && !alreadyEarned;
 
-    // Minutes
     const todayMinutes = profile.history
       .filter(h => h.date.startsWith(today) && !h.type && h.earned > 0)
       .reduce((sum, h) => sum + h.earned, 0);
@@ -118,7 +130,6 @@ export default function App() {
     const earned = shouldReward ? Math.min(settings.minutesPerSession, remaining) : 0;
     const newBalance = profile.balance + earned;
 
-    // Money: $0.10 per qualifying section, once per section
     const moneyEarned = shouldReward ? 0.10 : 0;
     const newEarnings = parseFloat(((profile.earnings ?? 0) + moneyEarned).toFixed(2));
 
@@ -139,7 +150,7 @@ export default function App() {
         ...prev[profileKey],
         balance: newBalance,
         earnings: newEarnings,
-        history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
+        history: [historyEntry, ...prev[profileKey].history].slice(0, 200)
       }
     }));
 
@@ -167,11 +178,8 @@ export default function App() {
       const deduct = Math.min(minutes, current);
       const historyEntry = {
         date: new Date().toISOString(),
-        subject: null,
-        score: null,
-        total: null,
-        earned: -deduct,
-        balance: current - deduct,
+        subject: null, score: null, total: null,
+        earned: -deduct, balance: current - deduct,
         type: 'redeem'
       };
       return {
@@ -179,7 +187,7 @@ export default function App() {
         [profileKey]: {
           ...prev[profileKey],
           balance: current - deduct,
-          history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
+          history: [historyEntry, ...prev[profileKey].history].slice(0, 200)
         }
       };
     });
@@ -201,7 +209,7 @@ export default function App() {
         [profileKey]: {
           ...prev[profileKey],
           earnings: 0,
-          history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
+          history: [historyEntry, ...prev[profileKey].history].slice(0, 200)
         }
       };
     });
@@ -213,11 +221,8 @@ export default function App() {
       const newBal = current + minutes;
       const historyEntry = {
         date: new Date().toISOString(),
-        subject: null,
-        score: null,
-        total: null,
-        earned: minutes,
-        balance: newBal,
+        subject: null, score: null, total: null,
+        earned: minutes, balance: newBal,
         type: 'bonus'
       };
       return {
@@ -225,7 +230,7 @@ export default function App() {
         [profileKey]: {
           ...prev[profileKey],
           balance: newBal,
-          history: [historyEntry, ...prev[profileKey].history].slice(0, 50)
+          history: [historyEntry, ...prev[profileKey].history].slice(0, 200)
         }
       };
     });
@@ -255,6 +260,14 @@ export default function App() {
           onParentMode={() => setView('parent')}
           onUpdateAvatar={updateAvatar}
           onUpdatePhoto={updatePhoto}
+          onSeeProfile={key => { setActiveProfile(key); setView('stats'); }}
+        />
+      )}
+
+      {view === 'stats' && activeProfile && (
+        <ProfileStats
+          profile={profiles[activeProfile]}
+          onBack={goHome}
         />
       )}
 

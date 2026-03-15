@@ -114,8 +114,13 @@ function CropModal({ imageSrc, onConfirm, onCancel }) {
   );
 }
 
+// ── Helpers ───────────────────────────────────
+function todayLabel() {
+  return new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
 // ── Individual profile card ───────────────────
-function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto }) {
+function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto, onSeeProfile }) {
   const fileInputRef = useRef(null);
   const [cropSrc, setCropSrc] = useState(null);
   const avatarIdx = data.avatarIndex ?? 0;
@@ -211,16 +216,23 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
 
         <div className="profile-card__name">{data.name}</div>
         <div className="profile-card__grade">Grade {data.grade}</div>
+        <div className="profile-card__date">{todayLabel()}</div>
         <div className="profile-card__balance">
-          ⏱ {data.balance} minute{data.balance !== 1 ? 's' : ''} available
+          ⏱ {data.balance} minute{data.balance !== 1 ? 's' : ''} available today
         </div>
+        <button
+          className="profile-card__stats-btn"
+          onClick={e => { e.stopPropagation(); onSeeProfile(profileKey); }}
+        >
+          See profile →
+        </button>
       </div>
     </>
   );
 }
 
 // ── Main export ───────────────────────────────
-export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpdateAvatar, onUpdatePhoto }) {
+export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpdateAvatar, onUpdatePhoto, onSeeProfile }) {
   return (
     <div className="profile-select">
       <div className="profile-select__header">
@@ -237,6 +249,7 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
         ].map(({ key, data }) => (
           <ProfileCard
             key={key}
+            onSeeProfile={onSeeProfile}
             profileKey={key}
             data={data}
             onSelect={onSelect}
