@@ -18,6 +18,19 @@ const ALL_SUBJECT_IDS = subjects.map(s => s.id);
 const DAILY_BONUS_MINUTES = 10;
 const DAILY_BONUS_MONEY = 2.00;
 
+/** Returns today's date in YYYY-MM-DD using the user's LOCAL timezone. */
+function localToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/** Extracts the LOCAL calendar date from any stored ISO timestamp. */
+function localDateOf(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 // ── Default State ──────────────────────────────
 const defaultProfiles = {
   daughter1: {
@@ -81,7 +94,7 @@ function AuthenticatedApp({ user }) {
     const docRef = doc(db, 'users', user.uid);
     getDoc(docRef)
       .then(snap => {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = localToday();
         if (snap.exists()) {
           const data = snap.data();
           const savedSettings = { ...defaultSettings, ...data.settings };
@@ -101,7 +114,6 @@ function AuthenticatedApp({ user }) {
           setSettings({ ...savedSettings, lastResetDate: today });
         } else {
           // First sign-in — initialize with defaults
-          const today = new Date().toISOString().slice(0, 10);
           setProfiles(defaultProfiles);
           setSettings({ ...defaultSettings, lastResetDate: today });
         }
@@ -109,9 +121,8 @@ function AuthenticatedApp({ user }) {
       })
       .catch(() => {
         // Network error fallback — use defaults so the app isn't broken
-        const today = new Date().toISOString().slice(0, 10);
         setProfiles(defaultProfiles);
-        setSettings({ ...defaultSettings, lastResetDate: today });
+        setSettings({ ...defaultSettings, lastResetDate: localToday() });
         setDataLoaded(true);
       });
   }, [user.uid]);
@@ -153,19 +164,19 @@ function AuthenticatedApp({ user }) {
   function finishQuiz(score, totalQuestions) {
     const profileKey = activeProfile;
     const profile = profiles[profileKey];
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localToday();
 
     const percent = Math.round((score / totalQuestions) * 100);
     const qualifies = percent >= 80;
 
     const alreadyEarned = profile.history.some(
-      h => h.date.startsWith(today) && h.subject === activeSubject && h.rewardEarned
+      h => localDateOf(h.date) === today && h.subject === activeSubject && h.rewardEarned
     );
 
     const shouldReward = qualifies && !alreadyEarned;
 
     const todayMinutes = profile.history
-      .filter(h => h.date.startsWith(today) && !h.type && h.earned > 0)
+      .filter(h => localDateOf(h.date) === today && !h.type && h.earned > 0)
       .reduce((sum, h) => sum + h.earned, 0);
     const remaining = Math.max(0, settings.dailyMax - todayMinutes);
     const earned = shouldReward ? Math.min(settings.minutesPerSession, remaining) : 0;
@@ -188,10 +199,10 @@ function AuthenticatedApp({ user }) {
     // Check if all 9 subjects now rewarded today (including this quiz)
     const tempHistory = [historyEntry, ...profile.history];
     const todayRewarded = new Set(
-      tempHistory.filter(h => h.date?.startsWith(today) && h.rewardEarned).map(h => h.subject)
+      tempHistory.filter(h => localDateOf(h.date) === today && h.rewardEarned).map(h => h.subject)
     );
     const bonusAlreadyGiven = profile.history.some(
-      h => h.date?.startsWith(today) && h.type === 'dailyBonus'
+      h => localDateOf(h.date) === today && h.type === 'dailyBonus'
     );
     const dailyBonusEarned = shouldReward &&
       ALL_SUBJECT_IDS.every(s => todayRewarded.has(s)) &&

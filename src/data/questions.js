@@ -1552,7 +1552,8 @@ const bankMap = {
  * The same set is returned all day; a fresh set appears the next day.
  */
 export function getQuestions(grade, subject) {
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // "20260315"
+  const d = new Date();
+  const today = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
   const seed = parseInt(today, 10) + grade * 1e6 + (subjectSeedOffset[subject] ?? 0);
   const bank = bankMap[grade]?.[subject] ?? [];
   return seededShuffle(bank, seed).slice(0, 15);
