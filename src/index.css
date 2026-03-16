@@ -847,20 +847,20 @@ body {
   top: 20px;
   right: 20px;
   font-family: var(--font);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #9ca3af;
-  background: rgba(255,255,255,0.45);
-  border: 1.5px solid rgba(156,163,175,0.25);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(156,163,175,0.35);
   border-radius: 100px;
-  padding: 6px 14px;
+  padding: 9px 20px;
   cursor: pointer;
   backdrop-filter: blur(8px);
   transition: color 0.15s, background 0.15s;
 }
 .signout-corner-btn:hover {
-  color: #6b7280;
-  background: rgba(255,255,255,0.7);
+  color: #374151;
+  background: rgba(255,255,255,0.8);
 }
 
 .parent-link {
