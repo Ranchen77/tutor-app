@@ -103,15 +103,15 @@ function AuthenticatedApp({ user }) {
             daughter1: { ...defaultProfiles.daughter1, ...data.profiles?.daughter1 },
             daughter2: { ...defaultProfiles.daughter2, ...data.profiles?.daughter2 }
           };
-          // Daily reset
-          if (savedSettings.lastResetDate !== today) {
+          // Daily reset — uses lastResetDateLocal (local timezone) to avoid UTC mismatch
+          if (savedSettings.lastResetDateLocal !== today) {
             savedProfiles = {
               daughter1: { ...savedProfiles.daughter1, balance: 0, earnings: 0 },
               daughter2: { ...savedProfiles.daughter2, balance: 0, earnings: 0 }
             };
           }
           setProfiles(savedProfiles);
-          setSettings({ ...savedSettings, lastResetDate: today });
+          setSettings({ ...savedSettings, lastResetDate: today, lastResetDateLocal: today });
         } else {
           // First sign-in — initialize with defaults
           setProfiles(defaultProfiles);
