@@ -238,6 +238,8 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
   const { logOut } = useAuth();
   return (
     <div className="profile-select">
+      <button className="signout-corner-btn" onClick={logOut}>Sign out</button>
+
       <div className="profile-select__header">
         <h1 className="profile-select__title">🎓 Tutor Time!</h1>
         <p className="profile-select__subtitle">
@@ -265,9 +267,6 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
       <div className="profile-select__footer">
         <button className="parent-link" onClick={onParentMode}>
           <Lock size={15} /> Parent Mode
-        </button>
-        <button className="parent-link parent-link--signout" onClick={logOut}>
-          Sign out
         </button>
       </div>
     </div>

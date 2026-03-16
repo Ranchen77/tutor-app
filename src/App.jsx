@@ -331,6 +331,7 @@ function AuthenticatedApp({ user }) {
           result={quizResult}
           onPlayAgain={() => setView('quiz')}
           onChooseSubject={() => setView('dashboard')}
+          onGoHome={goHome}
         />
       )}
 

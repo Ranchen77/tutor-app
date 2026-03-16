@@ -26,6 +26,7 @@ body {
 
 /* ── App wrapper ───────────────────────────── */
 .app {
+  position: relative;
   min-height: 100vh;
   background: var(--bg);
   display: flex;
@@ -841,17 +842,25 @@ body {
   margin-top: 32px;
 }
 
-.parent-link--signout {
+.signout-corner-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: var(--font);
   font-size: 0.8rem;
   font-weight: 500;
   color: #9ca3af;
-  border-color: rgba(156,163,175,0.3);
-  background: rgba(255,255,255,0.35);
-  padding: 7px 16px;
+  background: rgba(255,255,255,0.45);
+  border: 1.5px solid rgba(156,163,175,0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: color 0.15s, background 0.15s;
 }
-.parent-link--signout:hover {
+.signout-corner-btn:hover {
   color: #6b7280;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.7);
 }
 
 .parent-link {

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeFirestore, persistentLocalCache } from 'firebase/firestore';
 
 // Replace these values with your Firebase project config.
 // Go to: https://console.firebase.google.com → your project → Project Settings → Web app
@@ -15,4 +15,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+// Persistent local cache: writes are saved to IndexedDB immediately,
+// so a refresh before the network write completes won't lose data.
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache()
+});

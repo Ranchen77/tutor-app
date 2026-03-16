@@ -10,7 +10,7 @@ function ConfettiPiece({ style }) {
   return <div className="confetti-piece" style={style} />;
 }
 
-export default function Results({ profile, subject, result, onPlayAgain, onChooseSubject }) {
+export default function Results({ profile, subject, result, onPlayAgain, onChooseSubject, onGoHome }) {
   const { score, totalQuestions, earned, moneyEarned, newBalance, newEarnings,
           todayEarned, dailyMax, cappedOut, qualifies, alreadyEarned } = result;
   const subjectInfo = subjects.find(s => s.id === subject);
@@ -179,6 +179,10 @@ export default function Results({ profile, subject, result, onPlayAgain, onChoos
           <button className="btn btn-ghost" onClick={onChooseSubject}
             style={{ color: '#1e1b4b', border: '2px solid #e5e7eb', background: '#f3f4f6' }}>
             📚 Choose Subject
+          </button>
+          <button className="btn btn-ghost" onClick={onGoHome}
+            style={{ color: '#6b7280', border: '2px solid #e5e7eb', background: '#f9fafb' }}>
+            🏠 Home
           </button>
         </div>
       </div>
