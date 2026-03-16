@@ -494,6 +494,56 @@ export const grade6English = [
     options: ["Recieve", "Beleive", "Achieve", "Freind"],
     correctIndex: 2,
     explanation: "'Achieve' is spelled correctly. The others break the 'i before e except after c' rule: receive, believe, friend."
+  },
+  {
+    id: "g6-eng-11",
+    question: "Which of these is a compound sentence?",
+    options: [
+      "She ran fast.",
+      "Because it was raining, she stayed inside.",
+      "She ran fast, and he walked slowly.",
+      "The tall, old oak tree fell."
+    ],
+    correctIndex: 2,
+    explanation: "A compound sentence joins two independent clauses with a conjunction (and, but, or). 'She ran fast' and 'he walked slowly' are both complete sentences joined by 'and.'"
+  },
+  {
+    id: "g6-eng-12",
+    question: "What does the prefix 'un-' mean in the word 'unhappy'?",
+    options: ["Very", "Not", "Before", "Again"],
+    correctIndex: 1,
+    explanation: "The prefix 'un-' means 'not.' Unhappy = not happy. Other examples: unkind (not kind), unsafe (not safe)."
+  },
+  {
+    id: "g6-eng-13",
+    question: "Which word is an adverb in: 'The turtle moved slowly across the road'?",
+    options: ["turtle", "moved", "slowly", "road"],
+    correctIndex: 2,
+    explanation: "'Slowly' is an adverb — it describes how the turtle moved. Most adverbs answer 'how,' 'when,' 'where,' or 'how much.'"
+  },
+  {
+    id: "g6-eng-14",
+    question: "What is a simile?",
+    options: [
+      "Giving human traits to objects",
+      "An exaggerated statement",
+      "A comparison using 'like' or 'as'",
+      "Words that imitate sounds"
+    ],
+    correctIndex: 2,
+    explanation: "A simile compares two things using 'like' or 'as,' e.g., 'Her smile is like sunshine.' A metaphor makes the comparison directly without 'like' or 'as.'"
+  },
+  {
+    id: "g6-eng-15",
+    question: "Which sentence has correct subject-verb agreement?",
+    options: [
+      "The dogs barks loudly.",
+      "She walk to school every day.",
+      "The children plays outside.",
+      "He reads every night."
+    ],
+    correctIndex: 3,
+    explanation: "'He reads' correctly matches a singular subject with a singular verb. Plural subjects (dogs, children) need plural verbs (bark, play); singular subjects (he, she) need singular verbs (reads, walks)."
   }
 ];
 
@@ -1088,6 +1138,61 @@ export const grade9English = [
     ],
     correctIndex: 2,
     explanation: "The protagonist is the main character around whom the story revolves — they face the central conflict. The antagonist is the opposing force."
+  },
+  {
+    id: "g9-eng-11",
+    question: "What is the effect of anaphora in writing?",
+    options: [
+      "Creates a visual image in the reader's mind",
+      "Emphasizes an idea through repetition of a phrase at the start of successive clauses",
+      "Compares two unlike things directly",
+      "Understates something for humorous effect"
+    ],
+    correctIndex: 1,
+    explanation: "Anaphora is the repetition of a word or phrase at the beginning of successive clauses, creating emphasis and rhythm. Example: 'We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields…' (Churchill)."
+  },
+  {
+    id: "g9-eng-12",
+    question: "Which type of conflict is 'person vs. society'?",
+    options: ["Internal conflict", "External conflict", "Situational conflict", "Moral conflict"],
+    correctIndex: 1,
+    explanation: "External conflict occurs between a character and an outside force — another person, nature, society, or fate. 'Person vs. society' (e.g., fighting unjust laws) is a classic external conflict."
+  },
+  {
+    id: "g9-eng-13",
+    question: "What is the difference between denotation and connotation?",
+    options: [
+      "Denotation is a word's emotional meaning; connotation is its dictionary meaning",
+      "Denotation is a word's literal dictionary meaning; connotation is its emotional or cultural associations",
+      "They mean the same thing",
+      "Denotation applies only to nouns; connotation applies to verbs"
+    ],
+    correctIndex: 1,
+    explanation: "Denotation is the exact, literal definition of a word. Connotation is the emotional feeling or cultural association. 'Home' and 'house' have the same denotation but 'home' has warmer connotations."
+  },
+  {
+    id: "g9-eng-14",
+    question: "Which sentence is in the passive voice?",
+    options: [
+      "The chef cooked a delicious meal.",
+      "A delicious meal was cooked by the chef.",
+      "The chef is cooking a delicious meal.",
+      "The chef will cook a delicious meal."
+    ],
+    correctIndex: 1,
+    explanation: "In passive voice, the subject receives the action: 'A delicious meal (subject) was cooked (action received).' In active voice, the subject performs the action: 'The chef (subject) cooked (action performed).'"
+  },
+  {
+    id: "g9-eng-15",
+    question: "What is a foil character in literature?",
+    options: [
+      "The story's narrator",
+      "A character who dies early in the plot",
+      "A character whose contrasting traits highlight the protagonist's qualities",
+      "The most villainous character in the story"
+    ],
+    correctIndex: 2,
+    explanation: "A foil is a character whose traits contrast with the protagonist's to highlight the protagonist's qualities. For example, Draco Malfoy (ambitious, ruthless) is a foil to Harry Potter (brave, loyal)."
   }
 ];
 
@@ -1556,5 +1661,5 @@ export function getQuestions(grade, subject) {
   const today = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
   const seed = parseInt(today, 10) + grade * 1e6 + (subjectSeedOffset[subject] ?? 0);
   const bank = bankMap[grade]?.[subject] ?? [];
-  return seededShuffle(bank, seed).slice(0, 15);
+  return seededShuffle(bank, seed).slice(0, 10);
 }
