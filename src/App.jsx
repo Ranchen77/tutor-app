@@ -11,6 +11,12 @@ import Quiz from './components/Quiz';
 import Results from './components/Results';
 import ParentPanel from './components/ParentPanel';
 import ProfileStats from './components/ProfileStats';
+import DailyCompleteOverlay from './components/DailyCompleteOverlay';
+import { subjects } from './data/questions';
+
+const ALL_SUBJECT_IDS = subjects.map(s => s.id);
+const DAILY_BONUS_MINUTES = 10;
+const DAILY_BONUS_MONEY = 2.00;
 
 // ── Default State ──────────────────────────────
 const defaultProfiles = {
@@ -179,13 +185,43 @@ function AuthenticatedApp({ user }) {
       rewardEarned: shouldReward
     };
 
+    // Check if all 9 subjects now rewarded today (including this quiz)
+    const tempHistory = [historyEntry, ...profile.history];
+    const todayRewarded = new Set(
+      tempHistory.filter(h => h.date?.startsWith(today) && h.rewardEarned).map(h => h.subject)
+    );
+    const bonusAlreadyGiven = profile.history.some(
+      h => h.date?.startsWith(today) && h.type === 'dailyBonus'
+    );
+    const dailyBonusEarned = shouldReward &&
+      ALL_SUBJECT_IDS.every(s => todayRewarded.has(s)) &&
+      !bonusAlreadyGiven;
+
+    const finalBalance = newBalance + (dailyBonusEarned ? DAILY_BONUS_MINUTES : 0);
+    const finalEarnings = parseFloat(
+      (newEarnings + (dailyBonusEarned ? DAILY_BONUS_MONEY : 0)).toFixed(2)
+    );
+
+    const bonusEntry = dailyBonusEarned ? {
+      date: new Date().toISOString(),
+      subject: null, score: null, total: null,
+      earned: DAILY_BONUS_MINUTES,
+      moneyEarned: DAILY_BONUS_MONEY,
+      balance: finalBalance,
+      type: 'dailyBonus'
+    } : null;
+
+    const newHistory = bonusEntry
+      ? [bonusEntry, historyEntry, ...profile.history]
+      : [historyEntry, ...profile.history];
+
     setProfiles(prev => ({
       ...prev,
       [profileKey]: {
         ...prev[profileKey],
-        balance: newBalance,
-        earnings: newEarnings,
-        history: [historyEntry, ...prev[profileKey].history].slice(0, 200)
+        balance: finalBalance,
+        earnings: finalEarnings,
+        history: newHistory.slice(0, 200)
       }
     }));
 
@@ -194,13 +230,14 @@ function AuthenticatedApp({ user }) {
       totalQuestions,
       earned,
       moneyEarned,
-      newBalance,
-      newEarnings,
+      newBalance: finalBalance,
+      newEarnings: finalEarnings,
       todayEarned: todayMinutes + earned,
       dailyMax: settings.dailyMax,
       cappedOut: remaining === 0,
       qualifies,
-      alreadyEarned
+      alreadyEarned,
+      dailyBonusEarned
     });
     setView('results');
 
@@ -325,14 +362,24 @@ function AuthenticatedApp({ user }) {
       )}
 
       {view === 'results' && quizResult && (
-        <Results
-          profile={profiles[activeProfile]}
-          subject={activeSubject}
-          result={quizResult}
-          onPlayAgain={() => setView('quiz')}
-          onChooseSubject={() => setView('dashboard')}
-          onGoHome={goHome}
-        />
+        <>
+          <Results
+            profile={profiles[activeProfile]}
+            subject={activeSubject}
+            result={quizResult}
+            onPlayAgain={() => setView('quiz')}
+            onChooseSubject={() => setView('dashboard')}
+            onGoHome={goHome}
+          />
+          {quizResult.dailyBonusEarned && (
+            <DailyCompleteOverlay
+              profile={profiles[activeProfile]}
+              bonusMinutes={DAILY_BONUS_MINUTES}
+              bonusMoney={DAILY_BONUS_MONEY}
+              onCollect={() => setView('dashboard')}
+            />
+          )}
+        </>
       )}
 
       {view === 'parent' && (
