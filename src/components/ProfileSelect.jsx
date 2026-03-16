@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { AVATARS } from './Avatars';
 import { ChevronLeft, ChevronRight, Lock, Camera } from './Icons';
+import { useAuth } from '../contexts/AuthContext';
 
 const AVATAR_COUNT = AVATARS.length;
 const CROP_SIZE = 280; // px — square crop window
@@ -234,6 +235,7 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
 
 // ── Main export ───────────────────────────────
 export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpdateAvatar, onUpdatePhoto, onSeeProfile }) {
+  const { logOut } = useAuth();
   return (
     <div className="profile-select">
       <div className="profile-select__header">
@@ -263,6 +265,9 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
       <div className="profile-select__footer">
         <button className="parent-link" onClick={onParentMode}>
           <Lock size={15} /> Parent Mode
+        </button>
+        <button className="parent-link parent-link--signout" onClick={logOut}>
+          Sign out
         </button>
       </div>
     </div>

@@ -834,8 +834,24 @@ body {
 }
 
 .profile-select__footer {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   margin-top: 32px;
+}
+
+.parent-link--signout {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #9ca3af;
+  border-color: rgba(156,163,175,0.3);
+  background: rgba(255,255,255,0.35);
+  padding: 7px 16px;
+}
+.parent-link--signout:hover {
+  color: #6b7280;
+  background: rgba(255,255,255,0.6);
 }
 
 .parent-link {
