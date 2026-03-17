@@ -5,6 +5,7 @@ import { notifyParent } from './utils/notify';
 import './index.css';
 import { useAuth } from './contexts/AuthContext';
 import AuthScreen from './components/AuthScreen';
+import Onboarding from './components/Onboarding';
 import ProfileSelect from './components/ProfileSelect';
 import Dashboard from './components/Dashboard';
 import Quiz from './components/Quiz';
@@ -82,6 +83,7 @@ function AuthenticatedApp({ user }) {
   const [profiles, setProfiles] = useState(null);   // null = loading
   const [settings, setSettings] = useState(null);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
   // Navigation state
   const [view, setView] = useState('home');
@@ -98,24 +100,24 @@ function AuthenticatedApp({ user }) {
         if (snap.exists()) {
           const data = snap.data();
           const savedSettings = { ...defaultSettings, ...data.settings };
-          // Merge saved profiles with defaults to ensure new fields are present
-          let savedProfiles = {
-            daughter1: { ...defaultProfiles.daughter1, ...data.profiles?.daughter1 },
-            daughter2: { ...defaultProfiles.daughter2, ...data.profiles?.daughter2 }
-          };
+          // Load profiles dynamically (supports old daughter1/daughter2 and new child_N keys)
+          let savedProfiles = {};
+          Object.entries(data.profiles || {}).forEach(([key, profileData]) => {
+            savedProfiles[key] = { ...profileData };
+          });
           // Daily reset — uses lastResetDateLocal (local timezone) to avoid UTC mismatch
           if (savedSettings.lastResetDateLocal !== today) {
-            savedProfiles = {
-              daughter1: { ...savedProfiles.daughter1, balance: 0, earnings: 0 },
-              daughter2: { ...savedProfiles.daughter2, balance: 0, earnings: 0 }
-            };
+            const reset = {};
+            Object.entries(savedProfiles).forEach(([key, p]) => {
+              reset[key] = { ...p, balance: 0, earnings: 0 };
+            });
+            savedProfiles = reset;
           }
           setProfiles(savedProfiles);
           setSettings({ ...savedSettings, lastResetDate: today, lastResetDateLocal: today });
         } else {
-          // First sign-in — initialize with defaults
-          setProfiles(defaultProfiles);
-          setSettings({ ...defaultSettings, lastResetDate: today });
+          // First sign-in — show onboarding
+          setNeedsOnboarding(true);
         }
         setDataLoaded(true);
       })
@@ -127,6 +129,14 @@ function AuthenticatedApp({ user }) {
       });
   }, [user.uid]);
 
+  function handleOnboardingComplete(newProfiles) {
+    const today = localToday();
+    setProfiles(newProfiles);
+    setSettings({ ...defaultSettings, lastResetDate: today, lastResetDateLocal: today });
+    setNeedsOnboarding(false);
+    setDataLoaded(true);
+  }
+
   // ── Save to Firestore on every change ──────
   useEffect(() => {
     if (!dataLoaded || !profiles || !settings) return;
@@ -135,12 +145,17 @@ function AuthenticatedApp({ user }) {
   }, [profiles, settings, dataLoaded, user.uid]);
 
   // ── Loading screen ─────────────────────────
-  if (!dataLoaded) {
+  if (!dataLoaded && !needsOnboarding) {
     return (
       <div className="app-loading">
         <div className="app-loading__spinner" />
       </div>
     );
+  }
+
+  // ── Onboarding for new users ───────────────
+  if (needsOnboarding) {
+    return <Onboarding onComplete={handleOnboardingComplete} />;
   }
 
   // ── Navigation helpers ─────────────────────
@@ -204,8 +219,9 @@ function AuthenticatedApp({ user }) {
     const bonusAlreadyGiven = profile.history.some(
       h => localDateOf(h.date) === today && h.type === 'dailyBonus'
     );
+    const profileSubjectIds = profile.subjects || ALL_SUBJECT_IDS;
     const dailyBonusEarned = shouldReward &&
-      ALL_SUBJECT_IDS.every(s => todayRewarded.has(s)) &&
+      profileSubjectIds.every(s => todayRewarded.has(s)) &&
       !bonusAlreadyGiven;
 
     const finalBalance = newBalance + (dailyBonusEarned ? DAILY_BONUS_MINUTES : 0);

@@ -248,10 +248,7 @@ export default function ProfileSelect({ profiles, onSelect, onParentMode, onUpda
       </div>
 
       <div className="profile-select__cards">
-        {[
-          { key: 'daughter1', data: profiles.daughter1 },
-          { key: 'daughter2', data: profiles.daughter2 }
-        ].map(({ key, data }) => (
+        {Object.entries(profiles).map(([key, data]) => (
           <ProfileCard
             key={key}
             onSeeProfile={onSeeProfile}

@@ -53,7 +53,7 @@ export default function Dashboard({ profile, onSelectSubject, onBack, onParentMo
       {/* Subjects */}
       <div className="dashboard__section-title">Choose a Subject</div>
       <div className="subjects-grid">
-        {subjects.map(subject => (
+        {(profile.subjects ? subjects.filter(s => profile.subjects.includes(s.id)) : subjects).map(subject => (
           <div
             key={subject.id}
             className="subject-card"

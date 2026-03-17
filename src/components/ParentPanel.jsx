@@ -12,9 +12,13 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
   const [pinError, setPinError] = useState('');
   const [errorKey, setErrorKey] = useState(0); // re-mount for shake animation
 
-  // Redeem / bonus inputs
-  const [redeemValues, setRedeemValues] = useState({ daughter1: '', daughter2: '' });
-  const [bonusValues, setBonusValues] = useState({ daughter1: '', daughter2: '' });
+  // Redeem / bonus inputs — initialized dynamically from profile keys
+  const [redeemValues, setRedeemValues] = useState(
+    () => Object.fromEntries(Object.keys(profiles).map(k => [k, '']))
+  );
+  const [bonusValues, setBonusValues] = useState(
+    () => Object.fromEntries(Object.keys(profiles).map(k => [k, '']))
+  );
 
   // Settings
   const [mpsInput, setMpsInput] = useState(String(settings.minutesPerSession));
@@ -114,19 +118,9 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
     return { text, color: profileColor };
   }
 
-  // Merge and sort history
-  const allHistory = [
-    ...profiles.daughter1.history.map(h => ({
-      ...h,
-      profileName: profiles.daughter1.name,
-      profileColor: profiles.daughter1.color
-    })),
-    ...profiles.daughter2.history.map(h => ({
-      ...h,
-      profileName: profiles.daughter2.name,
-      profileColor: profiles.daughter2.color
-    }))
-  ]
+  // Merge and sort history across all profiles
+  const allHistory = Object.values(profiles)
+    .flatMap(p => p.history.map(h => ({ ...h, profileName: p.name, profileColor: p.color })))
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 10);
 
@@ -187,10 +181,7 @@ export default function ParentPanel({ profiles, settings, onUpdateSettings, onRe
 
       {/* Kids' Balance Cards */}
       <div className="parent-panel__kids">
-        {[
-          { key: 'daughter1', data: profiles.daughter1 },
-          { key: 'daughter2', data: profiles.daughter2 }
-        ].map(({ key, data }) => (
+        {Object.entries(profiles).map(([key, data]) => (
           <div
             key={key}
             className="kid-card"
