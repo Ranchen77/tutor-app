@@ -156,6 +156,11 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
         onKeyDown={e => e.key === 'Enter' && onSelect(profileKey)}
         aria-label={`Select ${data.name}'s profile`}
       >
+        {/* Balance banner — full bleed at top of card */}
+        <div className="profile-card__balance-banner">
+          ⏱ {data.balance} minute{data.balance !== 1 ? 's' : ''} available today
+        </div>
+
         <div className="profile-card__avatar-area" onClick={e => e.stopPropagation()}>
 
           {data.photoUrl ? (
@@ -219,14 +224,21 @@ function ProfileCard({ profileKey, data, onSelect, onUpdateAvatar, onUpdatePhoto
         <div className="profile-card__name">{data.name}</div>
         <div className="profile-card__grade">Grade {data.grade}</div>
         <div className="profile-card__date">{todayLabel()}</div>
-        <div className="profile-card__balance">
-          ⏱ {data.balance} minute{data.balance !== 1 ? 's' : ''} available today
-        </div>
+
+        {/* Primary CTA */}
+        <button
+          className="profile-card__start-btn"
+          onClick={e => { e.stopPropagation(); onSelect(profileKey); }}
+        >
+          Get Started →
+        </button>
+
+        {/* Secondary CTA */}
         <button
           className="profile-card__stats-btn"
           onClick={e => { e.stopPropagation(); onSeeProfile(profileKey); }}
         >
-          See profile →
+          See profile
         </button>
       </div>
     </>

@@ -298,7 +298,7 @@ body {
   background: white;
   border-radius: 24px;
   box-shadow: var(--shadow);
-  padding: 40px 36px 36px;
+  padding: 0 36px 36px;
   width: 320px;
   text-align: center;
   cursor: pointer;
@@ -308,12 +308,15 @@ body {
   overflow: hidden;
 }
 
-.profile-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 6px;
-  background: var(--profile-color);
+.profile-card__balance-banner {
+  margin: 0 -36px 24px;
+  padding: 10px 16px;
+  border-top: 4px solid var(--profile-color);
+  background: var(--profile-color-light);
+  color: var(--profile-color);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 .profile-card:hover {
@@ -572,16 +575,25 @@ body {
   letter-spacing: 0.3px;
 }
 
-.profile-card__balance {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-size: 0.82rem;
+.profile-card__start-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 12px;
+  background: var(--profile-color);
+  color: white;
+  font-size: 0.95rem;
   font-weight: 700;
-  background: var(--profile-color-light);
-  color: var(--profile-color);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.profile-card__start-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
 }
 
 .profile-card__stats-btn {
