@@ -84,6 +84,7 @@ function AuthenticatedApp({ user }) {
   const [settings, setSettings] = useState(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [onboardingProgress, setOnboardingProgress] = useState(null);
 
   // Navigation state
   const [view, setView] = useState('home');
@@ -99,22 +100,28 @@ function AuthenticatedApp({ user }) {
         const today = localToday();
         if (snap.exists()) {
           const data = snap.data();
-          const savedSettings = { ...defaultSettings, ...data.settings };
-          // Load profiles dynamically (supports old daughter1/daughter2 and new child_N keys)
-          let savedProfiles = {};
-          Object.entries(data.profiles || {}).forEach(([key, profileData]) => {
-            savedProfiles[key] = { ...profileData };
-          });
-          // Daily reset — uses lastResetDateLocal (local timezone) to avoid UTC mismatch
-          if (savedSettings.lastResetDateLocal !== today) {
-            const reset = {};
-            Object.entries(savedProfiles).forEach(([key, p]) => {
-              reset[key] = { ...p, balance: 0, earnings: 0 };
+          if (data.onboardingInProgress) {
+            // Partially completed onboarding — resume where they left off
+            setOnboardingProgress(data.onboardingProgress || null);
+            setNeedsOnboarding(true);
+          } else {
+            const savedSettings = { ...defaultSettings, ...data.settings };
+            // Load profiles dynamically (supports old daughter1/daughter2 and new child_N keys)
+            let savedProfiles = {};
+            Object.entries(data.profiles || {}).forEach(([key, profileData]) => {
+              savedProfiles[key] = { ...profileData };
             });
-            savedProfiles = reset;
+            // Daily reset — uses lastResetDateLocal (local timezone) to avoid UTC mismatch
+            if (savedSettings.lastResetDateLocal !== today) {
+              const reset = {};
+              Object.entries(savedProfiles).forEach(([key, p]) => {
+                reset[key] = { ...p, balance: 0, earnings: 0 };
+              });
+              savedProfiles = reset;
+            }
+            setProfiles(savedProfiles);
+            setSettings({ ...savedSettings, lastResetDate: today, lastResetDateLocal: today });
           }
-          setProfiles(savedProfiles);
-          setSettings({ ...savedSettings, lastResetDate: today, lastResetDateLocal: today });
         } else {
           // First sign-in — show onboarding
           setNeedsOnboarding(true);
@@ -128,6 +135,11 @@ function AuthenticatedApp({ user }) {
         setDataLoaded(true);
       });
   }, [user.uid]);
+
+  function handleSaveOnboardingProgress(progress) {
+    const docRef = doc(db, 'users', user.uid);
+    setDoc(docRef, { onboardingInProgress: true, onboardingProgress: progress }).catch(() => {});
+  }
 
   function handleOnboardingComplete(newProfiles) {
     const today = localToday();
@@ -155,7 +167,13 @@ function AuthenticatedApp({ user }) {
 
   // ── Onboarding for new users ───────────────
   if (needsOnboarding) {
-    return <Onboarding onComplete={handleOnboardingComplete} />;
+    return (
+      <Onboarding
+        onComplete={handleOnboardingComplete}
+        savedProgress={onboardingProgress}
+        onSaveProgress={handleSaveOnboardingProgress}
+      />
+    );
   }
 
   // ── Navigation helpers ─────────────────────

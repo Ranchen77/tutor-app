@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { subjects } from '../data/questions';
+import { useAuth } from '../contexts/AuthContext';
 
 const PROFILE_COLORS = [
   { color: '#0891b2', colorLight: '#cffafe' },
@@ -10,10 +11,13 @@ const PROFILE_COLORS = [
 
 const PROFILE_EMOJIS = ['⭐', '💜', '🌿', '🔥'];
 
-export default function Onboarding({ onComplete }) {
-  const [step, setStep] = useState(0);   // 0 = welcome, 1..numKids = kid setup
-  const [numKids, setNumKids] = useState(null);
-  const [completedKids, setCompletedKids] = useState([]);
+export default function Onboarding({ onComplete, savedProgress, onSaveProgress }) {
+  const { logOut } = useAuth();
+
+  // Initialize from saved progress if resuming
+  const [step, setStep] = useState(savedProgress ? savedProgress.completedKids.length + 1 : 0);
+  const [numKids, setNumKids] = useState(savedProgress ? savedProgress.numKids : null);
+  const [completedKids, setCompletedKids] = useState(savedProgress ? savedProgress.completedKids : []);
   const [current, setCurrent] = useState({ name: '', grade: 6, subjects: [] });
 
   function handleNumKids(n) {
@@ -21,6 +25,7 @@ export default function Onboarding({ onComplete }) {
     setCompletedKids([]);
     setCurrent({ name: '', grade: 6, subjects: [] });
     setStep(1);
+    onSaveProgress({ numKids: n, completedKids: [] });
   }
 
   function toggleSubject(subId) {
@@ -42,6 +47,7 @@ export default function Onboarding({ onComplete }) {
       setCompletedKids(newKids);
       setCurrent({ name: '', grade: 6, subjects: [] });
       setStep(step + 1);
+      onSaveProgress({ numKids, completedKids: newKids });
     } else {
       const profiles = {};
       newKids.forEach((kid, i) => {
@@ -65,6 +71,7 @@ export default function Onboarding({ onComplete }) {
   if (step === 0) {
     return (
       <div className="onboarding">
+        <button className="signout-corner-btn" onClick={logOut}>Sign out</button>
         <div className="onboarding__card">
           <div className="onboarding__hero-emoji">🎓</div>
           <h1 className="onboarding__title">Welcome to<br />Tutor Time!</h1>
@@ -95,6 +102,7 @@ export default function Onboarding({ onComplete }) {
 
   return (
     <div className="onboarding">
+      <button className="signout-corner-btn" onClick={logOut}>Sign out</button>
       <div className="onboarding__card">
         {numKids > 1 && (
           <div className="onboarding__progress">
