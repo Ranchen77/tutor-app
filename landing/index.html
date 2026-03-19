@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutor Time — Earn Screen Time & Allowance</title>
+  <meta name="description" content="Kids answer quiz questions to earn screen time and allowance. Parents stay in full control. Set up in minutes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ───────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: #1e1b4b;
+      background: white;
+      line-height: 1.6;
+    }
+
+    /* ── Tokens ─────────────────────────────── */
+    :root {
+      --purple: #7c3aed;
+      --indigo: #4f46e5;
+      --cyan: #0891b2;
+      --green: #059669;
+      --hero-bg: linear-gradient(160deg, #ede9fe 0%, #ddd6fe 30%, #c4b5fd 65%, #a78bfa 100%);
+      --radius: 20px;
+      --shadow: 0 4px 24px rgba(109,40,217,0.13);
+      --shadow-lg: 0 16px 48px rgba(109,40,217,0.22);
+    }
+
+    /* ── Nav ────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(124,58,237,0.1);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      font-size: 1.6rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--purple); }
+
+    .btn-nav {
+      padding: 10px 24px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-nav:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── Sections ───────────────────────────── */
+    section { padding: 96px 40px; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── Hero ───────────────────────────────── */
+    .hero {
+      background: var(--hero-bg);
+      padding: 140px 40px 80px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.6);
+      border: 1.5px solid rgba(124,58,237,0.25);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--purple);
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #1e1b4b;
+      margin-bottom: 20px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: #4b5563;
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,0.5); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.55);
+      color: #374151;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      border: 2px solid rgba(124,58,237,0.2);
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.85); border-color: rgba(124,58,237,0.4); }
+
+    .hero-trust {
+      margin-top: 28px;
+      font-size: 0.82rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    /* ── App mockup ─────────────────────────── */
+    .device-frame {
+      background: #1e1b4b;
+      border-radius: 40px;
+      padding: 14px;
+      box-shadow: 0 32px 80px rgba(30,27,75,0.4);
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .device-screen {
+      background: var(--hero-bg);
+      border-radius: 28px;
+      padding: 20px 16px;
+      overflow: hidden;
+    }
+
+    .mock-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .mock-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #1e1b4b;
+    }
+
+    .mock-subtitle {
+      font-size: 0.65rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .mock-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mock-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(109,40,217,0.1);
+    }
+
+    .mock-card__banner {
+      padding: 7px 14px;
+      border-top: 3px solid var(--banner-color, #0891b2);
+      background: var(--banner-light, #cffafe);
+      color: var(--banner-color, #0891b2);
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .mock-card__body {
+      padding: 10px 14px 12px;
+      text-align: center;
+    }
+
+    .mock-card__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 0 auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: var(--banner-light, #cffafe);
+    }
+
+    .mock-card__name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #1e1b4b;
+    }
+
+    .mock-card__grade {
+      font-size: 0.6rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .mock-card__btn {
+      display: block;
+      width: 100%;
+      padding: 6px 0;
+      border-radius: 8px;
+      background: var(--banner-color, #0891b2);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      border: none;
+      margin-bottom: 4px;
+    }
+
+    .mock-card__btn-ghost {
+      display: block;
+      width: 100%;
+      padding: 5px 0;
+      border-radius: 8px;
+      background: none;
+      color: #9ca3af;
+      font-size: 0.55rem;
+      font-weight: 600;
+      border: 1.5px solid #e5e7eb;
+    }
+
+    /* ── Trust bar ─────────────────────────── */
+    .trust-bar {
+      background: #f9fafb;
+      border-top: 1px solid #f3f4f6;
+      border-bottom: 1px solid #f3f4f6;
+      padding: 28px 40px;
+    }
+
+    .trust-bar .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .trust-icon {
+      font-size: 1.3rem;
+    }
+
+    /* ── Features ───────────────────────────── */
+    .features { background: white; }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: #1e1b4b;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: #6b7280;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: white;
+      border: 2px solid #f3f4f6;
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: #e9d5ff;
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: #6b7280;
+      line-height: 1.65;
+    }
+
+    /* ── How it works ───────────────────────── */
+    .how { background: var(--hero-bg); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(100% / 6);
+      right: calc(100% / 6);
+      height: 2px;
+      background: linear-gradient(90deg, rgba(124,58,237,0.3), rgba(79,70,229,0.3));
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: #4b5563;
+      line-height: 1.65;
+    }
+
+    /* ── Subjects ───────────────────────────── */
+    .subjects-section { background: white; }
+
+    .subjects-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    .subject-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 100px;
+      background: white;
+      border: 2px solid #f3f4f6;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #374151;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .subject-pill:hover {
+      transform: translateY(-3px);
+      border-color: var(--pill-color);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .subject-pill-emoji {
+      font-size: 1.3rem;
+    }
+
+    /* ── Parent panel ───────────────────────── */
+    .parent-section { background: #faf9ff; }
+
+    .parent-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .parent-features {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .parent-feature {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .parent-feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .parent-feature-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 4px;
+    }
+
+    .parent-feature-desc {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    /* ── Parent panel mockup ────────────────── */
+    .panel-mockup {
+      background: white;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 1px solid #f3f4f6;
+    }
+
+    .panel-mockup__header {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      padding: 20px 24px;
+      color: white;
+    }
+
+    .panel-mockup__title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .panel-mockup__subtitle {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .panel-mockup__body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-kid-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 2px solid var(--row-color, #cffafe);
+      background: var(--row-bg, #f0fdff);
+    }
+
+    .panel-kid-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-kid-emoji {
+      font-size: 1.4rem;
+    }
+
+    .panel-kid-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #1e1b4b;
+    }
+
+    .panel-kid-balance {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .panel-kid-badge {
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: var(--row-color, #0891b2);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .panel-activity {
+      border-top: 1px solid #f3f4f6;
+      padding-top: 14px;
+    }
+
+    .panel-activity-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .panel-activity-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .panel-activity-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .panel-activity-text {
+      font-size: 0.75rem;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    .panel-activity-time {
+      font-size: 0.68rem;
+      color: #9ca3af;
+      margin-left: auto;
+    }
+
+    /* ── Quiz mockup ────────────────────────── */
+    .quiz-section {
+      background: linear-gradient(160deg, #1e1b4b, #312e81, #4c1d95);
+      padding: 96px 40px;
+    }
+
+    .quiz-section .section-title { color: white; }
+    .quiz-section .section-sub { color: rgba(255,255,255,0.7); }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .quiz-mockup {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 32px 28px;
+      backdrop-filter: blur(8px);
+    }
+
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .quiz-option {
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quiz-option.correct {
+      background: rgba(16,185,129,0.25);
+      border-color: #10b981;
+      color: #6ee7b7;
+      font-weight: 700;
+    }
+
+    .quiz-option.selected {
+      background: rgba(124,58,237,0.3);
+      border-color: #a78bfa;
+      color: white;
+    }
+
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-progress-bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #a78bfa, #818cf8);
+      width: 60%;
+    }
+
+    .quiz-progress-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .quiz-points {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-point {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.1);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── Rewards section ──────────────────── */
+    .rewards-section { background: white; }
+
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .reward-card {
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      text-align: center;
+    }
+
+    .reward-card--time {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border: 2px solid #a7f3d0;
+    }
+
+    .reward-card--money {
+      background: linear-gradient(135deg, #fefce8, #fef9c3);
+      border: 2px solid #fde68a;
+    }
+
+    .reward-card--bonus {
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+      border: 2px solid #c4b5fd;
+    }
+
+    .reward-card-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .reward-card-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #1e1b4b;
+      margin-bottom: 4px;
+    }
+
+    .reward-card-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    .reward-card-desc {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── CTA banner ─────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--indigo), var(--purple), #a21caf);
+      text-align: center;
+      padding: 96px 40px;
+    }
+
+    .cta-section .section-label { color: rgba(255,255,255,0.7); }
+    .cta-section .section-title { color: white; }
+
+    .cta-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 40px;
+      border-radius: 100px;
+      background: white;
+      color: var(--purple);
+      font-size: 1.05rem;
+      font-weight: 800;
+      font-family: 'Poppins', sans-serif;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-cta-white:hover { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(0,0,0,0.3); }
+
+    .cta-note {
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 500;
+    }
+
+    /* ── Footer ─────────────────────────────── */
+    footer {
+      background: #111827;
+      padding: 48px 40px;
+      color: #9ca3af;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .footer-copy {
+      font-size: 0.82rem;
+    }
+
+    /* ── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; }
+      .nav-links .nav-link { display: none; }
+      section { padding: 72px 20px; }
+
+      .hero { padding: 120px 20px 72px; }
+      .hero .container { grid-template-columns: 1fr; gap: 48px; }
+      .device-frame { max-width: 260px; }
+
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+
+      .parent-grid { grid-template-columns: 1fr; gap: 48px; }
+
+      .quiz-grid { grid-template-columns: 1fr; }
+      .rewards-grid { grid-template-columns: 1fr; }
+
+      .trust-bar { padding: 20px; }
+      .trust-bar .container { gap: 24px; }
+
+      footer { padding: 32px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ───────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-icon">🎓</span>
+      Tutor Time
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#for-parents" class="nav-link">For Parents</a>
+      <a href="/tutor-app/" class="btn-nav">Get Started Free →</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <div class="hero-badge">✨ No subscriptions &nbsp;·&nbsp; Free to get started</div>
+        <h1 class="hero-title">
+          Turn Study Time<br />into <span>Screen Time</span>
+        </h1>
+        <p class="hero-sub">
+          Kids answer quiz questions to earn screen time and real allowance money. You stay in control. Everyone wins.
+        </p>
+        <div class="hero-ctas">
+          <a href="/tutor-app/" class="btn-primary">Get Started Free →</a>
+          <a href="#how-it-works" class="btn-secondary">See how it works</a>
+        </div>
+        <p class="hero-trust">⭐⭐⭐⭐⭐ &nbsp; Built by a parent, for parents</p>
+      </div>
+
+      <!-- App mockup -->
+      <div>
+        <div class="device-frame">
+          <div class="device-screen">
+            <div class="mock-header">
+              <div class="mock-title">🎓 Tutor Time!</div>
+              <div class="mock-subtitle">Answer questions to earn screen time &amp; allowance</div>
+            </div>
+            <div class="mock-cards">
+              <div class="mock-card" style="--banner-color:#0891b2; --banner-light:#cffafe;">
+                <div class="mock-card__banner">⏱ 25 minutes available today</div>
+                <div class="mock-card__body">
+                  <div class="mock-card__avatar" style="--banner-light:#cffafe;">⭐</div>
+                  <div class="mock-card__name">Lilah</div>
+                  <div class="mock-card__grade">Grade 6 · Mon, Mar 17</div>
+                  <button class="mock-card__btn">Get Started →</button>
+                  <button class="mock-card__btn-ghost">See profile</button>
+                </div>
+              </div>
+              <div class="mock-card" style="--banner-color:#7c3aed; --banner-light:#ede9fe;">
+                <div class="mock-card__banner">⏱ 0 minutes available today</div>
+                <div class="mock-card__body">
+                  <div class="mock-card__avatar" style="--banner-light:#ede9fe;">💜</div>
+                  <div class="mock-card__name">Emma</div>
+                  <div class="mock-card__grade">Grade 9 · Mon, Mar 17</div>
+                  <button class="mock-card__btn" style="background:#7c3aed;">Get Started →</button>
+                  <button class="mock-card__btn-ghost">See profile</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust bar ──────────────────────────── -->
+  <div class="trust-bar">
+    <div class="container">
+      <div class="trust-item"><span class="trust-icon">🔒</span> PIN-protected parent mode</div>
+      <div class="trust-item"><span class="trust-icon">📱</span> Works on any device</div>
+      <div class="trust-item"><span class="trust-icon">💾</span> Progress saved automatically</div>
+      <div class="trust-item"><span class="trust-icon">🌐</span> 9 subjects &amp; growing</div>
+    </div>
+  </div>
+
+  <!-- ── Features ──────────────────────────── -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need to<br />motivate learning</h2>
+      <p class="section-sub">Tutor Time makes studying feel like a game — because the rewards are real.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🧠</span>
+          <div class="feature-title">Real Academic Content</div>
+          <p class="feature-desc">Questions aligned to school subjects across Math, Science, History, Geography, English, and more. 40+ questions per subject to keep things fresh every day.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⏱️</span>
+          <div class="feature-title">Earn Screen Time</div>
+          <p class="feature-desc">Score 80% or higher to earn minutes. Parents redeem them on-demand — no more negotiating screen time. Minutes reset each day so the habit sticks.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💰</span>
+          <div class="feature-title">Real Allowance Rewards</div>
+          <p class="feature-desc">Kids earn $0.10 per quiz and a $2 bonus for completing all subjects in a day. You pay out from the parent panel whenever you're ready.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">👨‍👩‍👧‍👦</span>
+          <div class="feature-title">Multiple Kids</div>
+          <p class="feature-desc">Set up 1–4 kid profiles at sign-up, each with their own subjects, grade level, and progress. Every profile is fully independent.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌟</span>
+          <div class="feature-title">Daily Completion Bonus</div>
+          <p class="feature-desc">Finish every subject in a single day and unlock a special bonus — 10 extra minutes and $2 in earnings. A big motivator to keep going.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <div class="feature-title">Progress Tracking</div>
+          <p class="feature-desc">See each kid's quiz history, subject scores, earnings, and balance in one place. Know exactly what they studied and when.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it works ───────────────────────── -->
+  <section class="how" id="how-it-works">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:56px;">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">Simple for kids,<br />powerful for parents</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Set up profiles</div>
+          <p class="step-desc">Sign up and run through the quick onboarding wizard. Enter each kid's name, grade, and which subjects they study in school.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Kids take quizzes</div>
+          <p class="step-desc">Each kid picks a subject, answers 10 questions, and gets instant results. Score 80%+ to earn rewards for that session.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Earn & redeem</div>
+          <p class="step-desc">Parents unlock the parent panel with a PIN to redeem screen time, add bonus minutes, or pay out allowance earnings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Rewards ────────────────────────────── -->
+  <section class="rewards-section">
+    <div class="container" style="text-align:center;">
+      <div class="section-label">Rewards</div>
+      <h2 class="section-title">Real rewards for real effort</h2>
+      <p class="section-sub" style="margin:0 auto 48px;">Every quiz that clears 80% earns something tangible. The better they study, the more they earn.</p>
+
+      <div class="rewards-grid">
+        <div class="reward-card reward-card--time">
+          <span class="reward-card-icon">⏱️</span>
+          <div class="reward-card-value">10 min</div>
+          <div class="reward-card-label">Per passing quiz</div>
+          <p class="reward-card-desc">Earn screen time minutes for each subject passed. Minutes cap at the daily maximum you set.</p>
+        </div>
+        <div class="reward-card reward-card--money">
+          <span class="reward-card-icon">💵</span>
+          <div class="reward-card-value">$0.10</div>
+          <div class="reward-card-label">Per passing quiz</div>
+          <p class="reward-card-desc">Real allowance money accumulates in the app. Parents pay out whenever they choose.</p>
+        </div>
+        <div class="reward-card reward-card--bonus">
+          <span class="reward-card-icon">🌟</span>
+          <div class="reward-card-value">+$2 & 10 min</div>
+          <div class="reward-card-label">Daily completion bonus</div>
+          <p class="reward-card-desc">Complete every selected subject in one day to unlock the big daily bonus reward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Quiz ───────────────────────────────── -->
+  <section class="quiz-section">
+    <div class="container">
+      <div class="quiz-grid">
+        <div>
+          <div class="section-label" style="color:rgba(255,255,255,0.7);">The Quiz Experience</div>
+          <h2 class="section-title" style="color:white;">Questions that actually<br />match school curriculum</h2>
+          <p class="section-sub" style="color:rgba(255,255,255,0.7);">40+ questions per subject, shuffled daily using a clever seed system. Kids rarely see the same set twice. Grades 6 and 9 supported, with more coming.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:28px;">
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🔢 Math</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🌍 Geography</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">📜 History</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🔬 Science</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">📚 English</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🧬 Biology</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🇩🇪 German</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🇨🇳 Chinese</div>
+            <div style="padding:8px 16px; border-radius:100px; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); font-size:0.82rem; font-weight:600;">🎵 Music</div>
+          </div>
+        </div>
+
+        <div class="quiz-mockup">
+          <div class="quiz-points">
+            <div class="quiz-point">⏱ 20 min earned</div>
+            <div class="quiz-point">💰 $0.20 earned</div>
+          </div>
+          <div class="quiz-question">What is the chemical symbol for water?</div>
+          <div class="quiz-options">
+            <div class="quiz-option">O₂</div>
+            <div class="quiz-option correct">✓ H₂O</div>
+            <div class="quiz-option">CO₂</div>
+            <div class="quiz-option">NaCl</div>
+          </div>
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill"></div></div>
+            <div class="quiz-progress-label">6 of 10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Parent panel ───────────────────────── -->
+  <section class="parent-section" id="for-parents">
+    <div class="container">
+      <div class="parent-grid">
+        <!-- Panel mockup -->
+        <div class="panel-mockup">
+          <div class="panel-mockup__header">
+            <div class="panel-mockup__title">🔐 Parent Panel</div>
+            <div class="panel-mockup__subtitle">PIN-protected · Full control</div>
+          </div>
+          <div class="panel-mockup__body">
+            <div class="panel-kid-row" style="--row-color:#0891b2; --row-bg:#f0fdff;">
+              <div class="panel-kid-info">
+                <span class="panel-kid-emoji">⭐</span>
+                <div>
+                  <div class="panel-kid-name">Lilah</div>
+                  <div class="panel-kid-balance">25 min · $1.20 earned</div>
+                </div>
+              </div>
+              <div class="panel-kid-badge" style="background:#0891b2;">Redeem ⏱</div>
+            </div>
+            <div class="panel-kid-row" style="--row-color:#7c3aed; --row-bg:#faf5ff;">
+              <div class="panel-kid-info">
+                <span class="panel-kid-emoji">💜</span>
+                <div>
+                  <div class="panel-kid-name">Emma</div>
+                  <div class="panel-kid-balance">0 min · $0.40 earned</div>
+                </div>
+              </div>
+              <div class="panel-kid-badge" style="background:#7c3aed;">Pay Out 💵</div>
+            </div>
+            <div class="panel-activity">
+              <div class="panel-activity-title">Recent Activity</div>
+              <div class="panel-activity-item">
+                <div class="panel-activity-dot" style="background:#0891b2;"></div>
+                <div class="panel-activity-text">Lilah scored 9/10 in Science (+10 min)</div>
+                <div class="panel-activity-time">2m ago</div>
+              </div>
+              <div class="panel-activity-item">
+                <div class="panel-activity-dot" style="background:#7c3aed;"></div>
+                <div class="panel-activity-text">Emma scored 8/10 in Math (+10 min)</div>
+                <div class="panel-activity-time">18m ago</div>
+              </div>
+              <div class="panel-activity-item">
+                <div class="panel-activity-dot" style="background:#0891b2;"></div>
+                <div class="panel-activity-text">Lilah redeemed 30 min screen time</div>
+                <div class="panel-activity-time">1h ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features list -->
+        <div>
+          <div class="section-label">For Parents</div>
+          <h2 class="section-title">You're always<br />in control</h2>
+          <div class="parent-features">
+            <div class="parent-feature">
+              <div class="parent-feature-icon">🔐</div>
+              <div>
+                <div class="parent-feature-title">PIN-protected access</div>
+                <p class="parent-feature-desc">Your 4-digit PIN keeps kids out of the parent panel. Change it anytime from settings.</p>
+              </div>
+            </div>
+            <div class="parent-feature">
+              <div class="parent-feature-icon">⏱️</div>
+              <div>
+                <div class="parent-feature-title">Redeem screen time on your terms</div>
+                <p class="parent-feature-desc">Enter how many minutes to redeem and confirm. You decide when and how much — not an algorithm.</p>
+              </div>
+            </div>
+            <div class="parent-feature">
+              <div class="parent-feature-icon">💰</div>
+              <div>
+                <div class="parent-feature-title">Pay out real allowance</div>
+                <p class="parent-feature-desc">Track exactly how much each kid has earned. Pay out to their piggy bank or account whenever you're ready.</p>
+              </div>
+            </div>
+            <div class="parent-feature">
+              <div class="parent-feature-icon">⚙️</div>
+              <div>
+                <div class="parent-feature-title">Fully configurable</div>
+                <p class="parent-feature-desc">Set the minutes-per-session reward, daily maximum, and each kid's subject list. Add bonus minutes as you see fit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ───────────────────────────────── -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="section-label">Get started today</div>
+      <h2 class="section-title" style="margin-bottom:16px;">Ready to make studying<br />worth their while?</h2>
+      <p class="cta-sub">Sign up free, set up your kids' profiles in under 5 minutes, and watch the learning habit take hold.</p>
+      <a href="/tutor-app/" class="btn-cta-white">🎓 Create Your Family Account →</a>
+      <p class="cta-note">Free to use · No credit card · Works on any device</p>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">🎓 Tutor Time</div>
+      <div class="footer-copy">Built with ❤️ for curious kids and busy parents.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
