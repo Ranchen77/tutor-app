@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build && rm -rf firebase-public && mkdir -p firebase-public/tutor-app && cp -r dist/. firebase-public/tutor-app/ && cp landing/index.html firebase-public/index.html",
+    "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
     "firebase": "^12.10.0",
